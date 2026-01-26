@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur TOB | StocksPickeur</title>
+    <title>Générateur TOB | MyTOB.be</title>
     <link rel="icon" type="image/x-icon" href="logo-black.ico">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
 
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Animation douce sur les champs */
         input { transition: all 0.2s ease-in-out; }
+        canvas { touch-action: none; /* Empêche le scroll quand on dessine sur mobile */ }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
@@ -24,7 +22,7 @@
         <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl">🇧🇪</span>
-                <span class="font-bold text-lg tracking-tight text-slate-900">TOB<span class="text-emerald-600">Generator</span></span>
+                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span></span>
             </div>
             <div class="text-xs font-medium bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full flex items-center">
                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -41,12 +39,8 @@
                     Déclaration TOB <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">en 30 secondes</span>
                 </h1>
                 <p class="text-slate-500 text-lg max-w-xl mx-auto">
-                    Remplissez les champs ci-dessous pour générer votre PDF officiel (TD-OB 01) prêt à être envoyé.
+                    Générez votre PDF officiel prêt à être envoyé.
                 </p>
-                <div class="mt-6 inline-flex items-center bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-sm text-blue-800">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Aucune donnée n'est envoyée sur un serveur. Tout reste dans votre navigateur.
-                </div>
             </div>
 
             <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
@@ -60,91 +54,101 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Mois</label>
-                            <input type="text" id="month" placeholder="Ex: 01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                            <input type="text" id="month" placeholder="Ex: 01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Année</label>
-                            <input type="text" id="year" placeholder="Ex: 2026" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                            <input type="text" id="year" placeholder="Ex: 2026" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
 
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nom et Prénom</label>
-                            <input type="text" id="name" placeholder="Jean Dupont" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                            <input type="text" id="name" placeholder="Jean Dupont" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Numéro National (NN) ou Entreprise</label>
-                            <input type="text" id="nn" placeholder="00.00.00-000.00" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Numéro de Registre National (NN)</label>
+                            <input type="text" id="nn" placeholder="00.00.00-000.00" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Adresse complète</label>
-                            <input type="text" id="address" placeholder="Rue de la Loi 16, 1000 Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Lieu et Date de signature</label>
-                            <input type="text" id="signPlaceDate" placeholder="Bruxelles, le 15/02/2026" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                            <input type="text" id="address" placeholder="Rue de la Loi 16, 1000 Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
                 </div>
 
-                <div class="p-8 bg-slate-50/50">
+                <div class="p-8 bg-slate-50/50 border-b border-slate-100">
                     <h2 class="text-lg font-bold text-slate-800 flex items-center mb-6">
                         <span class="bg-emerald-100 text-emerald-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
-                        Transactions (Calcul Automatique)
+                        Transactions
                     </h2>
 
                     <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4 shadow-sm">
                         <div class="flex items-center mb-3">
                             <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">0,12%</span>
-                            <span class="text-sm text-slate-500">Obligations, certains ETF...</span>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label>
-                                <input type="number" id="nb_012" placeholder="0" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500 uppercase">Base Imposable (€)</label>
-                                <input type="number" id="base_012" placeholder="0.00" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
-                            </div>
+                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label><input type="number" id="nb_012" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"></div>
+                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Base (€)</label><input type="number" id="base_012" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"></div>
                         </div>
                     </div>
 
                     <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4 shadow-sm">
                         <div class="flex items-center mb-3">
                             <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded mr-2">0,35%</span>
-                            <span class="text-sm text-slate-500">Actions, ETF non enregistrés...</span>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label>
-                                <input type="number" id="nb_035" placeholder="0" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500 uppercase">Base Imposable (€)</label>
-                                <input type="number" id="base_035" placeholder="0.00" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
-                            </div>
+                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label><input type="number" id="nb_035" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"></div>
+                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Base (€)</label><input type="number" id="base_035" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"></div>
                         </div>
                     </div>
 
                     <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
                         <div class="flex items-center mb-3">
                             <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded mr-2">1,32%</span>
-                            <span class="text-sm text-slate-500">Fonds capitalisants enregistrés...</span>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label>
-                                <input type="number" id="nb_132" placeholder="0" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500 uppercase">Base Imposable (€)</label>
-                                <input type="number" id="base_132" placeholder="0.00" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none">
-                            </div>
+                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label><input type="number" id="nb_132" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none"></div>
+                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Base (€)</label><input type="number" id="base_132" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center mb-6">
+                        <span class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                        Signature & Date
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Fait à (Ville)</label>
+                            <input type="text" id="signCity" placeholder="Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Date de signature</label>
+                            <input type="date" id="signDate" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
 
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Votre Signature</label>
+                    <div class="mb-4">
+                        <div class="flex space-x-4 mb-2">
+                            <button onclick="toggleSignMode('draw')" id="btnDraw" class="text-sm font-medium px-3 py-1 rounded-md bg-slate-200 text-slate-700">Dessiner</button>
+                            <button onclick="toggleSignMode('upload')" id="btnUpload" class="text-sm font-medium px-3 py-1 rounded-md text-slate-500 hover:bg-slate-100">Importer Image</button>
+                        </div>
+
+                        <div id="drawArea" class="border-2 border-dashed border-slate-300 rounded-lg bg-slate-50 relative">
+                            <canvas id="signatureCanvas" height="150" class="w-full cursor-crosshair rounded-lg"></canvas>
+                            <button onclick="clearCanvas()" class="absolute top-2 right-2 text-xs bg-white border border-slate-200 px-2 py-1 rounded text-red-500 hover:text-red-700">Effacer</button>
+                        </div>
+
+                        <div id="uploadArea" class="hidden border-2 border-dashed border-slate-300 rounded-lg bg-slate-50 p-6 text-center">
+                            <input type="file" id="signatureFile" accept="image/png, image/jpeg" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+                            <p class="text-xs text-slate-400 mt-2">Format PNG ou JPG (fond transparent recommandé)</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="p-8 bg-slate-50 border-t border-slate-200 text-center">
@@ -152,14 +156,12 @@
                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         Télécharger le PDF Complété
                     </button>
-                    <p class="text-slate-400 text-xs mt-4">Le fichier sera renommé automatiquement avec la période choisie.</p>
                 </div>
             </div>
             
             <p class="text-center text-slate-400 text-sm mt-8 max-w-2xl mx-auto">
-                Cet outil est fourni à titre indicatif pour faciliter vos démarches. Vérifiez toujours l'exactitude des données avant d'envoyer votre déclaration au SPF Finances.
+                Cet outil est fourni à titre indicatif. Vérifiez toujours l'exactitude des données.
             </p>
-
         </div>
     </main>
 
@@ -172,7 +174,64 @@
     </footer>
 
     <script>
-        const { PDFDocument, rgb, StandardFonts } = PDFLib;
+        // --- LOGIQUE SIGNATURE (CANVAS) ---
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        // Ajuster la taille du canvas à l'affichage
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 150; // Hauteur fixe
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#000000';
+        }
+        window.addEventListener('resize', resizeCanvas);
+        // Appel initial avec petit délai pour le rendu
+        setTimeout(resizeCanvas, 100);
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDraw(e) { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); e.preventDefault(); }
+        function draw(e) { if (!isDrawing) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); e.preventDefault(); }
+        function endDraw() { isDrawing = false; ctx.beginPath(); }
+
+        canvas.addEventListener('mousedown', startDraw);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', endDraw);
+        canvas.addEventListener('touchstart', startDraw);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', endDraw);
+
+        function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+        function toggleSignMode(mode) {
+            if (mode === 'draw') {
+                document.getElementById('drawArea').classList.remove('hidden');
+                document.getElementById('uploadArea').classList.add('hidden');
+                document.getElementById('btnDraw').className = "text-sm font-medium px-3 py-1 rounded-md bg-slate-200 text-slate-700";
+                document.getElementById('btnUpload').className = "text-sm font-medium px-3 py-1 rounded-md text-slate-500 hover:bg-slate-100";
+                setTimeout(resizeCanvas, 50);
+            } else {
+                document.getElementById('drawArea').classList.add('hidden');
+                document.getElementById('uploadArea').classList.remove('hidden');
+                document.getElementById('btnDraw').className = "text-sm font-medium px-3 py-1 rounded-md text-slate-500 hover:bg-slate-100";
+                document.getElementById('btnUpload').className = "text-sm font-medium px-3 py-1 rounded-md bg-slate-200 text-slate-700";
+            }
+        }
+
+        // --- LOGIQUE PDF ---
+        const { PDFDocument, rgb } = PDFLib;
 
         async function fillPDF() {
             try {
@@ -187,74 +246,110 @@
                 const firstPage = pages[0]; 
                 const secondPage = pages[1]; 
                 
-                // Récupération des données
+                // Données Textes
                 const month = document.getElementById('month').value;
                 const year = document.getElementById('year').value;
                 const name = document.getElementById('name').value;
                 const nn = document.getElementById('nn').value;
                 const address = document.getElementById('address').value;
-                const signPlaceDate = document.getElementById('signPlaceDate').value;
+                
+                // Signature Data
+                const signCity = document.getElementById('signCity').value;
+                const signDateRaw = document.getElementById('signDate').value; // Format YYYY-MM-DD
+                let signDateFormatted = "";
+                if (signDateRaw) {
+                    const [y, m, d] = signDateRaw.split('-');
+                    signDateFormatted = `${d}/${m}/${y}`;
+                }
+                const fullSignText = signCity && signDateFormatted ? `${signCity}, le ${signDateFormatted}` : "";
 
-                // Données chiffrées
-                const nb012 = document.getElementById('nb_012').value || "";
+                // Calculs
+                const nb012 = document.getElementById('nb_012').value;
                 const base012 = parseFloat(document.getElementById('base_012').value) || 0;
                 const tax012 = base012 > 0 ? (base012 * 0.0012).toFixed(2) : "";
 
-                const nb035 = document.getElementById('nb_035').value || "";
+                const nb035 = document.getElementById('nb_035').value;
                 const base035 = parseFloat(document.getElementById('base_035').value) || 0;
                 const tax035 = base035 > 0 ? (base035 * 0.0035).toFixed(2) : "";
 
-                const nb132 = document.getElementById('nb_132').value || "";
+                const nb132 = document.getElementById('nb_132').value;
                 const base132 = parseFloat(document.getElementById('base_132').value) || 0;
                 const tax132 = base132 > 0 ? (base132 * 0.0132).toFixed(2) : "";
 
                 const totalTax = (Number(tax012) + Number(tax035) + Number(tax132)).toFixed(2);
-
                 const fontSize = 10;
-                
 
                 if(month) firstPage.drawText(month, { x: 295, y: 690, size: fontSize }); 
                 if(year)  firstPage.drawText(year,  { x: 270, y: 690, size: fontSize }); 
                 
-                
-                // Numéro national
                 firstPage.drawText(nn, { x: 305, y: 585, size: fontSize });
-                // Nom
                 firstPage.drawText(name, { x: 305, y: 575, size: fontSize });
-                // Adresse
                 firstPage.drawText(address, { x: 305, y: 552, size: fontSize });
 
-                // 3. TABLEAU (Milieu bas)
-                // Les colonnes X restent à peu près ok : Nombre (340), Base (430), Taxe (530)
-                // Les lignes Y doivent descendre SOUS le titre "Calcul de la taxe..."
+                if(nb012) firstPage.drawText(nb012.toString(), { x: 240, y: 480, size: fontSize });
+                if(base012) firstPage.drawText(base012.toFixed(2), { x: 360, y: 480, size: fontSize });
+                if(tax012) firstPage.drawText(tax012.toString(), { x: 502, y: 480, size: fontSize });
+
+                if(nb035) firstPage.drawText(nb035.toString(), { x: 240, y: 457, size: fontSize });
+                if(base035) firstPage.drawText(base035.toFixed(2), { x: 360, y: 457, size: fontSize });
+                if(tax035) firstPage.drawText(tax035.toString(), { x: 502, y: 457, size: fontSize });
+
+                if(nb132) firstPage.drawText(nb132.toString(), { x: 240, y: 432, size: fontSize });
+                if(base132) firstPage.drawText(base132.toFixed(2), { x: 360, y: 432, size: fontSize });
+                if(tax132) firstPage.drawText(tax132.toString(), { x: 502, y: 432, size: fontSize });
+
+                if(totalTax > 0) firstPage.drawText(totalTax, { x: 502, y: 386, size: fontSize, color: rgb(0, 0, 0) });
+
+                // Page 2 - Total
+                if(totalTax > 0) secondPage.drawText(totalTax, { x: 425, y: 452, size: fontSize });
+
+                // --------------------------------------------------------
+                // 2. GESTION SIGNATURE (PAGE 2)
+                // --------------------------------------------------------
                 
-                // Ligne 0.12% (Était 485 -> Nouveau 412)
-                if(nb012) firstPage.drawText(nb012.toString(), { x: 340, y: 412, size: fontSize });
-                if(base012) firstPage.drawText(base012.toFixed(2), { x: 430, y: 412, size: fontSize });
-                if(tax012) firstPage.drawText(tax012.toString(), { x: 530, y: 412, size: fontSize });
+                // Texte: "À Bruxelles, le 15/12/2026"
+                if(fullSignText) {
+                    secondPage.drawText(fullSignText, { x: 100, y: 312, size: fontSize });
+                }
 
-                // Ligne 0.35% (Était 460 -> Nouveau 392)
-                if(nb035) firstPage.drawText(nb035.toString(), { x: 340, y: 392, size: fontSize });
-                if(base035) firstPage.drawText(base035.toFixed(2), { x: 430, y: 392, size: fontSize });
-                if(tax035) firstPage.drawText(tax035.toString(), { x: 530, y: 392, size: fontSize });
+                // Texte: Nom Prénom (ajouté à côté de la signature)
+                if(name) {
+                    secondPage.drawText("(signé par " + name + ")", { x: 375, y: 275, size: fontSize});
+                }
 
-                // Ligne 1.32% (Était 435 -> Nouveau 372)
-                if(nb132) firstPage.drawText(nb132.toString(), { x: 340, y: 372, size: fontSize });
-                if(base132) firstPage.drawText(base132.toFixed(2), { x: 430, y: 372, size: fontSize });
-                if(tax132) firstPage.drawText(tax132.toString(), { x: 530, y: 372, size: fontSize });
+                // Image de signature
+                let signatureImageBytes = null;
+                const fileInput = document.getElementById('signatureFile');
 
-                // Total (a) (Était 370 -> Nouveau 320)
-                if(totalTax > 0) firstPage.drawText(totalTax, { x: 530, y: 320, size: fontSize, color: rgb(0, 0, 0) });
+                // Cas 1 : Image uploadée
+                if (!document.getElementById('uploadArea').classList.contains('hidden') && fileInput.files.length > 0) {
+                    signatureImageBytes = await fileInput.files[0].arrayBuffer();
+                } 
+                // Cas 2 : Dessin Canvas
+                else if (!document.getElementById('drawArea').classList.contains('hidden')) {
+                    // Vérifier si le canvas n'est pas vide (simple check sur dataURL)
+                    const dataUrl = canvas.toDataURL('image/png');
+                    signatureImageBytes = await fetch(dataUrl).then(res => res.arrayBuffer());
+                }
 
-                // 4. PAGE 2
-                // Total reporté
-                if(totalTax > 0) secondPage.drawText(totalTax, { x: 500, y: 650, size: fontSize }); // Ajusté à vue de nez
-                // Signature
-                secondPage.drawText(signPlaceDate, { x: 120, y: 250, size: fontSize });
-
-
-                // --- DEBUGGER (Décommentez la ligne ci-dessous pour voir la grille) ---
-                // drawGrid(firstPage); 
+                if (signatureImageBytes) {
+                    // Essayer d'embarquer en PNG (marche aussi souvent pour JPG via pdf-lib)
+                    try {
+                        const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
+                        // On définit une largeur max, on garde le ratio
+                        const sigDims = signatureImage.scale(0.25); // Échelle à ajuster selon la taille originale
+                        
+                        // On place l'image sous la date
+                        secondPage.drawImage(signatureImage, {
+                            x: 250,
+                            y: 260, // Position Y de l'image
+                            width: 150, // Largeur forcée
+                            height: (150 / signatureImage.width) * signatureImage.height, // Hauteur proportionnelle
+                        });
+                    } catch (e) {
+                        console.warn("Erreur image (peut-être format non supporté, essayez JPG/PNG):", e);
+                    }
+                }
 
                 const pdfBytes = await pdfDoc.save();
                 const blob = new Blob([pdfBytes], { type: "application/pdf" });
@@ -265,25 +360,7 @@
 
             } catch (err) {
                 alert("Erreur : " + err.message);
-            }
-        }
-
-        // --- OUTIL D'AIDE AU CALIBRAGE ---
-        // Cette fonction dessine une grille rouge sur le PDF pour lire les coordonnées Y
-        function drawGrid(page) {
-            const { width, height } = page.getSize();
-            const fontSize = 8;
-            
-            // Lignes horizontales tous les 50 points
-            for (let y = 0; y < height; y += 20) {
-                page.drawLine({
-                    start: { x: 0, y },
-                    end: { x: 100, y }, // Petite ligne sur le côté gauche
-                    thickness: 1,
-                    color: rgb(1, 0, 0),
-                    opacity: 0.5,
-                });
-                page.drawText(y.toString(), { x: 5, y: y + 2, size: fontSize, color: rgb(1, 0, 0) });
+                console.error(err);
             }
         }
     </script>
