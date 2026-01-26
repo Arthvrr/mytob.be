@@ -12,18 +12,20 @@
 
     <style>
         body { font-family: 'Inter', sans-serif; }
-        input { transition: all 0.2s ease-in-out; }
+        input, select { transition: all 0.2s ease-in-out; }
         canvas { touch-action: none; }
+        .scroller::-webkit-scrollbar { width: 6px; }
+        .scroller::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <span class="text-2xl">🇧🇪</span>
-                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span></span>
-            </div>
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="icon.png" alt="Logo" class="h-12 w-auto"> 
+                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span>.be</span>
+            </a>
             
             <div class="flex items-center space-x-4">
                 <a href="explication.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
@@ -41,7 +43,7 @@
                     Déclaration TOB <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">en 30 secondes</span>
                 </h1>
                 <p class="text-slate-500 text-lg max-w-xl mx-auto mb-4">
-                    Générez votre PDF officiel prêt à être envoyé.
+                    Ajoutez vos transactions une par une, nous calculons les totaux pour vous.
                 </p>
                 <a href="explication.html" class="md:hidden text-sm text-emerald-600 font-medium hover:underline">
                     ℹ️ C'est quoi la TOB ?
@@ -89,33 +91,46 @@
                         Transactions
                     </h2>
 
-                    <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4 shadow-sm">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">0,12%</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label><input type="number" id="nb_012" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"></div>
-                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Base (€)</label><input type="number" id="base_012" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Montant Transaction (€)</label>
+                                <input type="number" id="newAmount" placeholder="1000.00" step="0.01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Taux Applicable</label>
+                                <select id="newRate" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer">
+                                    <option value="0.35">0,35 % (Actions, ETF Acc)</option>
+                                    <option value="0.12">0,12 % (Obligations, ETF Dist)</option>
+                                    <option value="1.32">1,32 % (Fonds enregistrés BE)</option>
+                                </select>
+                            </div>
+                            <button onclick="addTransaction()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center shadow-sm hover:shadow-md">
+                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                Ajouter
+                            </button>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4 shadow-sm">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded mr-2">0,35%</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label><input type="number" id="nb_035" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"></div>
-                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Base (€)</label><input type="number" id="base_035" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"></div>
+                    <div class="mb-6">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">Historique des ajouts</h3>
+                        <div id="transactionList" class="space-y-2 max-h-48 overflow-y-auto scroller bg-white rounded-lg border border-slate-100 p-2 min-h-[60px] flex flex-col justify-center">
+                            <p class="text-center text-slate-400 text-sm italic">Aucune transaction ajoutée</p>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded mr-2">1,32%</span>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs text-slate-500 border-t border-slate-200 pt-4">
+                        <div>
+                            <span class="block font-bold text-blue-600 text-lg" id="summary_012">0,00 €</span>
+                            Total Base 0,12%
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label><input type="number" id="nb_132" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none"></div>
-                            <div><label class="text-xs font-semibold text-slate-500 uppercase">Base (€)</label><input type="number" id="base_132" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none"></div>
+                        <div>
+                            <span class="block font-bold text-orange-600 text-lg" id="summary_035">0,00 €</span>
+                            Total Base 0,35%
+                        </div>
+                        <div>
+                            <span class="block font-bold text-red-600 text-lg" id="summary_132">0,00 €</span>
+                            Total Base 1,32%
                         </div>
                     </div>
                 </div>
@@ -173,12 +188,104 @@
     <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <p class="text-slate-600 text-sm font-medium">
-                &copy; 2026 StocksPickeur. Fait avec passion en Belgique 🇧🇪
+                &copy; <a href="https://stockspickeur.eu">2026 StocksPickeur</a>. Fait avec passion en Belgique 🇧🇪
             </p>
         </div>
     </footer>
 
     <script>
+        // --- GESTION DES TRANSACTIONS ---
+        let transactions = [];
+
+        function addTransaction() {
+            const amountInput = document.getElementById('newAmount');
+            const rateInput = document.getElementById('newRate');
+            
+            const amount = parseFloat(amountInput.value);
+            const rate = rateInput.value;
+
+            if (!amount || amount <= 0) {
+                alert("Veuillez entrer un montant valide.");
+                return;
+            }
+
+            // Ajouter au tableau
+            transactions.push({
+                id: Date.now(),
+                amount: amount,
+                rate: rate
+            });
+
+            // Reset input
+            amountInput.value = "";
+            renderTransactions();
+        }
+
+        function removeTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            renderTransactions();
+        }
+
+        function renderTransactions() {
+            const list = document.getElementById('transactionList');
+            
+            // On vide visuellement la liste
+            list.innerHTML = ""; 
+
+            // Si aucune transaction, on affiche le message vide
+            if (transactions.length === 0) {
+                list.innerHTML = '<p class="text-center text-slate-400 text-sm italic">Aucune transaction ajoutée</p>';
+            } else {
+                // Sinon on boucle pour afficher chaque élément
+                transactions.forEach(t => {
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-100 text-sm mb-1 last:mb-0";
+                    
+                    // Couleur badge selon taux
+                    let badgeClass = "bg-gray-100 text-gray-800";
+                    if(t.rate === "0.12") badgeClass = "bg-blue-100 text-blue-800";
+                    if(t.rate === "0.35") badgeClass = "bg-orange-100 text-orange-800";
+                    if(t.rate === "1.32") badgeClass = "bg-red-100 text-red-800";
+
+                    div.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="${badgeClass} font-bold px-2 py-0.5 rounded text-xs mr-3 min-w-[50px] text-center">${t.rate}%</span>
+                            <span class="font-medium text-slate-700">${t.amount.toFixed(2)} €</span>
+                        </div>
+                        <button onclick="removeTransaction(${t.id})" class="text-slate-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    `;
+                    list.appendChild(div);
+                });
+            }
+            // Toujours mettre à jour les totaux
+            updateSummaries();
+        }
+
+        function updateSummaries() {
+            const stats = calculateStats();
+            document.getElementById('summary_012').innerText = stats['0.12'].total.toFixed(2) + " €";
+            document.getElementById('summary_035').innerText = stats['0.35'].total.toFixed(2) + " €";
+            document.getElementById('summary_132').innerText = stats['1.32'].total.toFixed(2) + " €";
+        }
+
+        function calculateStats() {
+            let stats = {
+                '0.12': { count: 0, total: 0 },
+                '0.35': { count: 0, total: 0 },
+                '1.32': { count: 0, total: 0 }
+            };
+
+            transactions.forEach(t => {
+                if(stats[t.rate]) {
+                    stats[t.rate].count++;
+                    stats[t.rate].total += t.amount;
+                }
+            });
+            return stats;
+        }
+
         // --- LOGIQUE SIGNATURE (CANVAS) ---
         const canvas = document.getElementById('signatureCanvas');
         const ctx = canvas.getContext('2d');
@@ -261,16 +368,22 @@
                 }
                 const fullSignText = signCity && signDateFormatted ? `${signCity}, le ${signDateFormatted}` : "";
 
-                const nb012 = document.getElementById('nb_012').value;
-                const base012 = parseFloat(document.getElementById('base_012').value) || 0;
+                // --- RECUPERATION DES DONNÉES CALCULÉES ---
+                const stats = calculateStats();
+
+                // 0.12%
+                const nb012 = stats['0.12'].count || "";
+                const base012 = stats['0.12'].total;
                 const tax012 = base012 > 0 ? (base012 * 0.0012).toFixed(2) : "";
 
-                const nb035 = document.getElementById('nb_035').value;
-                const base035 = parseFloat(document.getElementById('base_035').value) || 0;
+                // 0.35%
+                const nb035 = stats['0.35'].count || "";
+                const base035 = stats['0.35'].total;
                 const tax035 = base035 > 0 ? (base035 * 0.0035).toFixed(2) : "";
 
-                const nb132 = document.getElementById('nb_132').value;
-                const base132 = parseFloat(document.getElementById('base_132').value) || 0;
+                // 1.32%
+                const nb132 = stats['1.32'].count || "";
+                const base132 = stats['1.32'].total;
                 const tax132 = base132 > 0 ? (base132 * 0.0132).toFixed(2) : "";
 
                 const totalTax = (Number(tax012) + Number(tax035) + Number(tax132)).toFixed(2);
@@ -285,15 +398,15 @@
                 firstPage.drawText(address, { x: 305, y: 552, size: fontSize });
 
                 if(nb012) firstPage.drawText(nb012.toString(), { x: 240, y: 480, size: fontSize });
-                if(base012) firstPage.drawText(base012.toFixed(2), { x: 360, y: 480, size: fontSize });
+                if(base012 > 0) firstPage.drawText(base012.toFixed(2), { x: 360, y: 480, size: fontSize });
                 if(tax012) firstPage.drawText(tax012.toString(), { x: 502, y: 480, size: fontSize });
 
                 if(nb035) firstPage.drawText(nb035.toString(), { x: 240, y: 457, size: fontSize });
-                if(base035) firstPage.drawText(base035.toFixed(2), { x: 360, y: 457, size: fontSize });
+                if(base035 > 0) firstPage.drawText(base035.toFixed(2), { x: 360, y: 457, size: fontSize });
                 if(tax035) firstPage.drawText(tax035.toString(), { x: 502, y: 457, size: fontSize });
 
                 if(nb132) firstPage.drawText(nb132.toString(), { x: 240, y: 432, size: fontSize });
-                if(base132) firstPage.drawText(base132.toFixed(2), { x: 360, y: 432, size: fontSize });
+                if(base132 > 0) firstPage.drawText(base132.toFixed(2), { x: 360, y: 432, size: fontSize });
                 if(tax132) firstPage.drawText(tax132.toString(), { x: 502, y: 432, size: fontSize });
 
                 if(totalTax > 0) firstPage.drawText(totalTax, { x: 502, y: 386, size: fontSize, color: rgb(0, 0, 0) });
