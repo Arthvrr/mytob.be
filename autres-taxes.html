@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxe Reynders & Comptes-Titres | MyTOB.be</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .prose p { margin-bottom: 1.5rem; line-height: 1.75; color: #334155; }
+        .prose h2 { margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #0f172a; font-size: 1.5rem; letter-spacing: -0.025em; }
+        .prose h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; color: #1e293b; font-size: 1.125rem; }
+        .prose ul { margin-bottom: 1.5rem; list-style-type: disc; padding-left: 1.5rem; color: #334155; }
+        .prose li { margin-bottom: 0.5rem; }
+        .highlight-box { background-color: #F8FAFC; border-left: 4px solid #059669; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+        .warning-box { background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+    </style>
+</head>
+<body class="bg-white text-slate-800 flex flex-col min-h-screen">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="icon.png" alt="Logo" class="h-12 w-auto"> 
+                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span>.be</span>
+            </a>
+            
+            <div class="flex items-center space-x-4">
+                <a href="explication-tob.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Comprendre la TOB
+                </a>
+                <a href="dividende.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Dividendes
+                </a>
+                <a href="compte-etranger.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Comptes Étrangers
+                </a>
+                <a href="autres-taxes.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Autres Taxes
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="bg-slate-50 border-b border-slate-100 py-16 px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <span class="text-emerald-600 font-semibold tracking-wide uppercase text-xs">Expertise Avancée</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mt-3 mb-6 leading-tight">
+                    Les Taxes Oubliées Reynders & TCT
+                </h1>
+                <p class="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                    Vous pensez avoir tout payé avec la TOB ? Attention aux plus-values sur obligations et à la taxe sur les gros portefeuilles.
+                </p>
+            </div>
+        </div>
+
+        <article class="max-w-3xl mx-auto px-6 py-12 prose text-justify">
+            
+            <p class="text-lg">
+                Au-delà de la TOB et des dividendes, le système fiscal belge cache deux autres mécanismes qui peuvent surprendre les investisseurs utilisant des courtiers étrangers comme Degiro ou Trade Republic.
+            </p>
+
+            <h2 class="text-red-700">1. La Taxe Reynders (Le piège des ETF Obligataires)</h2>
+            <p>
+                En Belgique, les plus-values sur actions sont exonérées (0% d'impôt). Mais ce n'est <strong>pas</strong> le cas pour les obligations ! C'est ce qu'on appelle la "Taxe Reynders".
+            </p>
+
+            <h3>Qui est concerné ?</h3>
+            <p>
+                Vous êtes concerné si vous vendez (ou si vous achetez un ETF qui capitalise) un fonds composé à <strong>plus de 10 %</strong> de créances (obligations, cash, bons du trésor).
+            </p>
+            <ul>
+                <li><strong>ETF 100% Obligations :</strong> Concernés à 100%.</li>
+                <li><strong>ETF Mixtes (Multi-Asset) :</strong> Concernés si la part obligataire dépasse 10%.</li>
+                <li><strong>Fonds Monétaires :</strong> Concernés.</li>
+            </ul>
+
+            <div class="highlight-box">
+                <p class="mb-0 font-medium">
+                    💰 <strong>Le Taux :</strong> 30 % sur la plus-value réalisée.
+                </p>
+            </div>
+
+            <h3>Le problème avec les courtiers étrangers</h3>
+            <p>
+                Les banques belges calculent cette taxe uniquement sur la partie "intérêts" de la plus-value (via un coefficient appelé TIS - Taxable Income per Share). 
+                <br><br>
+                Mais les courtiers étrangers (Degiro, etc.) ne calculent <strong>jamais</strong> cette taxe. C'est à vous de la déclarer via votre déclaration fiscale annuelle (Précompte Mobilier).
+            </p>
+            
+            <div class="warning-box">
+                <h4 class="font-bold text-red-800 mb-2">Le Danger "Forfaitaire"</h4>
+                <p class="text-red-900 text-sm mb-0">
+                    Si vous ne connaissez pas le montant exact des intérêts accumulés (le TIS), le fisc peut exiger que vous payiez <strong>30% sur la totalité de la plus-value</strong> lors de la vente.
+                    <br><br>
+                    <em>Conseil StocksPickeur : Pour éviter ce casse-tête administratif, privilégiez les obligations en direct ou acceptez que la gestion des ETF obligataires soit fiscalement lourde en Belgique.</em>
+                </p>
+            </div>
+
+            <h2>2. La Taxe sur les Comptes-Titres (TCT)</h2>
+            <p>
+                C'est une taxe annuelle qui vise les patrimoines plus importants. Elle s'applique automatiquement dès qu'un compte-titres dépasse une certaine valeur moyenne.
+            </p>
+
+            <h3>Les règles du jeu</h3>
+            <ul>
+                <li><strong>Seuil :</strong> 1.000.000 € (Un million d'euros) sur un seul compte-titres (ou si vous êtes titulaire de plusieurs comptes dépassant ce total, bien que le calcul se fasse par compte).</li>
+                <li><strong>Taux :</strong> 0,15 % par an.</li>
+                <li><strong>Base de calcul :</strong> La valeur moyenne du portefeuille, calculée à 4 dates fixes (31 déc, 31 mars, 30 juin, 30 sept).</li>
+            </ul>
+
+            <h3>Comment la payer ?</h3>
+            <p>
+                Si vous êtes chez une banque belge, elle prélève la taxe automatiquement.
+                <br>
+                Si vous êtes chez un courtier étranger et que votre portefeuille dépasse 1 million d'euros, vous devez :
+            </p>
+            <ol class="list-decimal pl-6 space-y-2 text-slate-700">
+                <li>Calculer la valeur moyenne vous-même.</li>
+                <li>Remplir une déclaration spécifique TCT.</li>
+                <li>Payer la taxe spontanément.</li>
+            </ol>
+            <p>
+                <em>Note : Il existe un mécanisme anti-abus qui empêche de scinder un compte de 1,2M€ en deux comptes de 600k€ pour éviter la taxe.</em>
+            </p>
+
+            <div class="mt-12 pt-8 border-t border-slate-200 text-center">
+                <h3 class="mb-4">Votre cerveau fume ? C'est normal.</h3>
+                <p class="text-slate-500 mb-6">Revenons à des choses simples : déclarer votre TOB mensuelle.</p>
+                <a href="index.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-emerald-600 rounded-xl hover:bg-emerald-700 hover:shadow-lg hover:-translate-y-1">
+                    Retour au Générateur
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <p class="text-slate-600 text-sm font-medium">
+                &copy; <a href="https://stockspickeur.eu" class="hover:text-emerald-600 transition">2026 StocksPickeur</a>. Fait avec passion en Belgique 🇧🇪
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
