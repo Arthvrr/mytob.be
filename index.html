@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur TOB | MyTOB.be</title>
-    <link rel="icon" type="image/x-icon" href="logo-black.ico">
+    <link rel="icon" type="image/x-icon" href="icon.ico">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,7 +13,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         input { transition: all 0.2s ease-in-out; }
-        canvas { touch-action: none; /* Empêche le scroll quand on dessine sur mobile */ }
+        canvas { touch-action: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
@@ -24,9 +24,11 @@
                 <span class="text-2xl">🇧🇪</span>
                 <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span></span>
             </div>
-            <div class="text-xs font-medium bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full flex items-center">
-                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                100% Privé & Local
+            
+            <div class="flex items-center space-x-4">
+                <a href="explication.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Comprendre la TOB
+                </a>
             </div>
         </div>
     </header>
@@ -38,9 +40,12 @@
                 <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
                     Déclaration TOB <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">en 30 secondes</span>
                 </h1>
-                <p class="text-slate-500 text-lg max-w-xl mx-auto">
+                <p class="text-slate-500 text-lg max-w-xl mx-auto mb-4">
                     Générez votre PDF officiel prêt à être envoyé.
                 </p>
+                <a href="explication.html" class="md:hidden text-sm text-emerald-600 font-medium hover:underline">
+                    ℹ️ C'est quoi la TOB ?
+                </a>
             </div>
 
             <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
@@ -179,27 +184,22 @@
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
 
-        // Ajuster la taille du canvas à l'affichage
         function resizeCanvas() {
             const rect = canvas.getBoundingClientRect();
             canvas.width = rect.width;
-            canvas.height = 150; // Hauteur fixe
+            canvas.height = 150; 
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.strokeStyle = '#000000';
         }
         window.addEventListener('resize', resizeCanvas);
-        // Appel initial avec petit délai pour le rendu
         setTimeout(resizeCanvas, 100);
 
         function getPos(e) {
             const rect = canvas.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return {
-                x: clientX - rect.left,
-                y: clientY - rect.top
-            };
+            return { x: clientX - rect.left, y: clientY - rect.top };
         }
 
         function startDraw(e) { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); e.preventDefault(); }
@@ -246,16 +246,14 @@
                 const firstPage = pages[0]; 
                 const secondPage = pages[1]; 
                 
-                // Données Textes
                 const month = document.getElementById('month').value;
                 const year = document.getElementById('year').value;
                 const name = document.getElementById('name').value;
                 const nn = document.getElementById('nn').value;
                 const address = document.getElementById('address').value;
                 
-                // Signature Data
                 const signCity = document.getElementById('signCity').value;
-                const signDateRaw = document.getElementById('signDate').value; // Format YYYY-MM-DD
+                const signDateRaw = document.getElementById('signDate').value; 
                 let signDateFormatted = "";
                 if (signDateRaw) {
                     const [y, m, d] = signDateRaw.split('-');
@@ -263,7 +261,6 @@
                 }
                 const fullSignText = signCity && signDateFormatted ? `${signCity}, le ${signDateFormatted}` : "";
 
-                // Calculs
                 const nb012 = document.getElementById('nb_012').value;
                 const base012 = parseFloat(document.getElementById('base_012').value) || 0;
                 const tax012 = base012 > 0 ? (base012 * 0.0012).toFixed(2) : "";
@@ -279,6 +276,7 @@
                 const totalTax = (Number(tax012) + Number(tax035) + Number(tax132)).toFixed(2);
                 const fontSize = 10;
 
+                // --- COORDONNÉES FIGÉES ---
                 if(month) firstPage.drawText(month, { x: 295, y: 690, size: fontSize }); 
                 if(year)  firstPage.drawText(year,  { x: 270, y: 690, size: fontSize }); 
                 
@@ -300,54 +298,37 @@
 
                 if(totalTax > 0) firstPage.drawText(totalTax, { x: 502, y: 386, size: fontSize, color: rgb(0, 0, 0) });
 
-                // Page 2 - Total
+                // Page 2
                 if(totalTax > 0) secondPage.drawText(totalTax, { x: 425, y: 452, size: fontSize });
 
-                // --------------------------------------------------------
-                // 2. GESTION SIGNATURE (PAGE 2)
-                // --------------------------------------------------------
-                
-                // Texte: "À Bruxelles, le 15/12/2026"
                 if(fullSignText) {
                     secondPage.drawText(fullSignText, { x: 100, y: 312, size: fontSize });
                 }
 
-                // Texte: Nom Prénom (ajouté à côté de la signature)
                 if(name) {
                     secondPage.drawText("(signé par " + name + ")", { x: 375, y: 275, size: fontSize});
                 }
 
-                // Image de signature
                 let signatureImageBytes = null;
                 const fileInput = document.getElementById('signatureFile');
 
-                // Cas 1 : Image uploadée
                 if (!document.getElementById('uploadArea').classList.contains('hidden') && fileInput.files.length > 0) {
                     signatureImageBytes = await fileInput.files[0].arrayBuffer();
                 } 
-                // Cas 2 : Dessin Canvas
                 else if (!document.getElementById('drawArea').classList.contains('hidden')) {
-                    // Vérifier si le canvas n'est pas vide (simple check sur dataURL)
                     const dataUrl = canvas.toDataURL('image/png');
                     signatureImageBytes = await fetch(dataUrl).then(res => res.arrayBuffer());
                 }
 
                 if (signatureImageBytes) {
-                    // Essayer d'embarquer en PNG (marche aussi souvent pour JPG via pdf-lib)
                     try {
                         const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
-                        // On définit une largeur max, on garde le ratio
-                        const sigDims = signatureImage.scale(0.25); // Échelle à ajuster selon la taille originale
-                        
-                        // On place l'image sous la date
                         secondPage.drawImage(signatureImage, {
-                            x: 250,
-                            y: 260, // Position Y de l'image
-                            width: 150, // Largeur forcée
-                            height: (150 / signatureImage.width) * signatureImage.height, // Hauteur proportionnelle
+                            x: 250, y: 260, width: 150,
+                            height: (150 / signatureImage.width) * signatureImage.height,
                         });
                     } catch (e) {
-                        console.warn("Erreur image (peut-être format non supporté, essayez JPG/PNG):", e);
+                        console.warn("Erreur image (essayez JPG/PNG):", e);
                     }
                 }
 

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tout comprendre sur la TOB | MyTOB.be</title>
+    <link rel="icon" type="image/x-icon" href="logo-black.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Styles pour la lisibilité du texte */
+        .prose p { margin-bottom: 1.5rem; line-height: 1.75; color: #334155; }
+        .prose h2 { margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #0f172a; font-size: 1.5rem; letter-spacing: -0.025em; }
+        .prose h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; color: #1e293b; font-size: 1.125rem; }
+        .prose ul { margin-bottom: 1.5rem; list-style-type: disc; padding-left: 1.5rem; color: #334155; }
+        .prose li { margin-bottom: 0.5rem; }
+        .highlight-box { background-color: #F8FAFC; border-left: 4px solid #059669; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+    </style>
+</head>
+<body class="bg-white text-slate-800 flex flex-col min-h-screen">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <span class="text-2xl">🇧🇪</span>
+                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span></span>
+            </a>
+            <a href="index.html" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-sm shadow-emerald-100">
+                Accéder au formulaire
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="bg-slate-50 border-b border-slate-100 py-16 px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <span class="text-emerald-600 font-semibold tracking-wide uppercase text-xs">Fiscalité Belge</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mt-3 mb-6 leading-tight">
+                    Comprendre la Taxe sur les Opérations de Bourse (TOB)
+                </h1>
+                <p class="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                    Le guide complet pour les investisseurs belges utilisant des courtiers étrangers (Degiro, Trade Republic, IBKR).
+                </p>
+            </div>
+        </div>
+
+        <article class="max-w-3xl mx-auto px-6 py-12 prose text-justify">
+            
+            <p class="text-lg">
+                Si vous êtes résident fiscal belge et que vous investissez via une plateforme étrangère qui ne prélève pas la taxe à la source, vous êtes légalement responsable de déclarer et payer la TOB vous-même. Voici les règles précises pour éviter les amendes du SPF Finances.
+            </p>
+
+            <h2>1. Le principe de la taxe</h2>
+            <p>
+                La TOB s'applique à chaque <strong>achat</strong> et chaque <strong>vente</strong> de titres financiers (actions, obligations, ETF). Elle ne s'applique pas aux dividendes ni à la simple détention de titres.
+            </p>
+            <div class="highlight-box">
+                <p class="mb-0 font-medium">
+                    ⚠️ <strong>Règle d'or :</strong> La taxe est due dans les deux mois suivant la transaction. Si vous achetez une action en Janvier, vous devez déclarer et payer avant le 31 Mars.
+                </p>
+            </div>
+
+            <h2>2. Les Taux en détail (2026)</h2>
+            <p>
+                La complexité de la TOB réside dans ses différents taux. Il ne suffit pas de savoir que vous avez acheté un "ETF", il faut connaître sa structure (Distribution vs Capitalisation) et son lieu d'enregistrement.
+            </p>
+
+            <h3>A. Le taux de 0,12 % (Plafond : 1.300 €)</h3>
+            <p>Ce taux est le plus bas. Il s'applique principalement aux :</p>
+            <ul>
+                <li><strong>Obligations :</strong> Toute obligation d'état ou d'entreprise (marché secondaire).</li>
+                <li><strong>ETF de Distribution :</strong> Les fonds qui versent des dividendes périodiques.</li>
+                <li><strong>ETF de Capitalisation (enregistrés en Belgique) :</strong> <em>Attention, c'est ici que ça se corse.</em> Si un ETF de capitalisation est inscrit sur la liste du SPF Finances, il passe souvent à 1,32%. Mais certains trackers spécifiques restent à 0,12% s'ils ne sont pas considérés comme des "SICAV" au sens strict. Dans le doute, pour un ETF Distributif, c'est presque toujours 0,12%.</li>
+            </ul>
+
+            <h3>B. Le taux de 0,35 % (Plafond : 1.600 €)</h3>
+            <p>C'est le taux le plus courant pour les "Stock Pickeurs". Il concerne :</p>
+            <ul>
+                <li><strong>Actions :</strong> Toutes les actions individuelles (Apple, LVMH, Tesla, etc.).</li>
+                <li><strong>Certificats & Trackers (Mixed) :</strong> Certains produits structurés.</li>
+                <li><strong>ETF de Capitalisation (NON enregistrés en Belgique) :</strong> C'est le cas de figure le plus recherché. Si votre ETF accumule les dividendes (Acc) mais n'est pas enregistré auprès de la FSMA en Belgique, le taux est de 0,35% au lieu de 1,32%. C'est pourquoi des ETF comme le <em>VWCE</em> (Vanguard FTSE All-World) ont longtemps fait débat.</li>
+            </ul>
+
+            <h3>C. Le taux de 1,32 % (Plafond : 4.000 €)</h3>
+            <p>Le taux "punitif" pour les produits de capitalisation enregistrés localement :</p>
+            <ul>
+                <li><strong>Fonds de Capitalisation (BE) :</strong> La plupart des fonds bancaires classiques belges.</li>
+                <li><strong>ETF de Capitalisation (Enregistrés) :</strong> Si l'ETF est enregistré en Belgique, le fisc applique ce taux maximal. C'est souvent le cas pour les versions très populaires de l'iShares Core MSCI World sur certaines places boursières.</li>
+            </ul>
+
+            <h2>3. Comment calculer la base imposable ?</h2>
+            <p>
+                La base imposable est le montant brut de l'exécution de l'ordre.
+            </p>
+            <ul>
+                <li><strong>Formule :</strong> <code>Prix unitaire x Quantité</code></li>
+                <li><strong>Exemple :</strong> Vous achetez 10 actions à 100 €. Le montant est de 1.000 €.</li>
+                <li><strong>Exclusion des frais :</strong> Vous ne devez PAS inclure les frais de courtage (courtage, frais de change, etc.) dans la base imposable. Si Degiro vous facture 3€ de frais, la taxe se calcule sur 1.000 €, pas 1.003 €.</li>
+            </ul>
+
+            <h2>4. La procédure de paiement</h2>
+            <p>
+                Une fois votre PDF généré via notre outil <strong>MyTOB</strong> :
+            </p>
+            <ol class="list-decimal pl-6 space-y-2 text-slate-700">
+                <li>Imprimez le formulaire (ou signez-le numériquement).</li>
+                <li>Envoyez-le par email au bureau compétent du SPF Finances (l'adresse email <em>CPIC.TAXDIV@minfin.fed.be</em> figure souvent sur les formulaires, vérifiez la notice actuelle).</li>
+                <li>Effectuez le virement bancaire vers le compte du SPF Finances (indiqué sur le PDF généré) avec en communication structurée ou libre : <em>"TOB [Mois]/[Année] - [Votre Numéro National]"</em>.</li>
+            </ol>
+
+            <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-8 mt-12 shadow-sm">
+                <h5 class="text-xl font-bold text-emerald-800 mb-4 flex items-center">
+                    <span class="bg-emerald-200 text-emerald-800 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">🔑</span> 
+                    Ce qu'il faut retenir
+                </h5>
+                <p class="text-emerald-900 m-0 leading-relaxed">
+                    Ne soyez pas schizophrène avec votre argent. Chaque stratégie a ses règles.<br>
+                    Si vous choisissez le <strong>Quality Investing</strong> (comme nous), vous devez accepter de ne pas acheter les actions "bradées" en faillite (Value) et de ne pas courir après la dernière "hype" spéculative du moment (Momentum).<br>
+                    Votre avantage concurrentiel sera la <strong>patience</strong> et la <strong>sélectivité</strong> sur la qualité intrinsèque du business.
+                </p>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-slate-200 text-center">
+                <h3 class="mb-4">Prêt à régulariser votre situation ?</h3>
+                <a href="index.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-slate-900 rounded-xl hover:bg-slate-800 hover:shadow-lg hover:-translate-y-1">
+                    Générer ma déclaration PDF
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <p class="text-slate-600 text-sm font-medium">
+                &copy; 2026 StocksPickeur. Fait avec passion en Belgique 🇧🇪
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
