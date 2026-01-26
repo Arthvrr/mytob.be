@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur TOB | StocksPickeur</title>
+    <link rel="icon" type="image/x-icon" href="logo-black.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Animation douce sur les champs */
+        input { transition: all 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🇧🇪</span>
+                <span class="font-bold text-lg tracking-tight text-slate-900">TOB<span class="text-emerald-600">Generator</span></span>
+            </div>
+            <div class="text-xs font-medium bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full flex items-center">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                100% Privé & Local
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow py-12 px-4">
+        <div class="max-w-3xl mx-auto">
+            
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
+                    Déclaration TOB <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">en 30 secondes</span>
+                </h1>
+                <p class="text-slate-500 text-lg max-w-xl mx-auto">
+                    Remplissez les champs ci-dessous pour générer votre PDF officiel (TD-OB 01) prêt à être envoyé.
+                </p>
+                <div class="mt-6 inline-flex items-center bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-sm text-blue-800">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Aucune donnée n'est envoyée sur un serveur. Tout reste dans votre navigateur.
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+                
+                <div class="p-8 border-b border-slate-100">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center mb-6">
+                        <span class="bg-slate-100 text-slate-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                        Identification
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Mois</label>
+                            <input type="text" id="month" placeholder="Ex: 01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Année</label>
+                            <input type="text" id="year" placeholder="Ex: 2026" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nom et Prénom</label>
+                            <input type="text" id="name" placeholder="Jean Dupont" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Numéro National (NN) ou Entreprise</label>
+                            <input type="text" id="nn" placeholder="00.00.00-000.00" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Adresse complète</label>
+                            <input type="text" id="address" placeholder="Rue de la Loi 16, 1000 Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Lieu et Date de signature</label>
+                            <input type="text" id="signPlaceDate" placeholder="Bruxelles, le 15/02/2026" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8 bg-slate-50/50">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center mb-6">
+                        <span class="bg-emerald-100 text-emerald-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                        Transactions (Calcul Automatique)
+                    </h2>
+
+                    <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4 shadow-sm">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">0,12%</span>
+                            <span class="text-sm text-slate-500">Obligations, certains ETF...</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label>
+                                <input type="number" id="nb_012" placeholder="0" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500 uppercase">Base Imposable (€)</label>
+                                <input type="number" id="base_012" placeholder="0.00" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4 shadow-sm">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded mr-2">0,35%</span>
+                            <span class="text-sm text-slate-500">Actions, ETF non enregistrés...</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label>
+                                <input type="number" id="nb_035" placeholder="0" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500 uppercase">Base Imposable (€)</label>
+                                <input type="number" id="base_035" placeholder="0.00" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded mr-2">1,32%</span>
+                            <span class="text-sm text-slate-500">Fonds capitalisants enregistrés...</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500 uppercase">Nombre</label>
+                                <input type="number" id="nb_132" placeholder="0" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500 uppercase">Base Imposable (€)</label>
+                                <input type="number" id="base_132" placeholder="0.00" step="0.01" class="w-full mt-1 rounded border-slate-200 p-2 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="p-8 bg-slate-50 border-t border-slate-200 text-center">
+                    <button onclick="fillPDF()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-emerald-200 transform hover:-translate-y-0.5 transition flex items-center justify-center mx-auto text-lg">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Télécharger le PDF Complété
+                    </button>
+                    <p class="text-slate-400 text-xs mt-4">Le fichier sera renommé automatiquement avec la période choisie.</p>
+                </div>
+            </div>
+            
+            <p class="text-center text-slate-400 text-sm mt-8 max-w-2xl mx-auto">
+                Cet outil est fourni à titre indicatif pour faciliter vos démarches. Vérifiez toujours l'exactitude des données avant d'envoyer votre déclaration au SPF Finances.
+            </p>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <p class="text-slate-600 text-sm font-medium">
+                &copy; 2026 StocksPickeur. Fait avec passion en Belgique 🇧🇪
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const { PDFDocument, rgb, StandardFonts } = PDFLib;
+
+        async function fillPDF() {
+            try {
+                const url = 'TOB.pdf';
+                const existingPdfBytes = await fetch(url).then(res => {
+                    if (!res.ok) throw new Error("Fichier TOB.pdf introuvable");
+                    return res.arrayBuffer();
+                });
+
+                const pdfDoc = await PDFDocument.load(existingPdfBytes);
+                const pages = pdfDoc.getPages();
+                const firstPage = pages[0]; 
+                const secondPage = pages[1]; 
+                
+                // Récupération des données
+                const month = document.getElementById('month').value;
+                const year = document.getElementById('year').value;
+                const name = document.getElementById('name').value;
+                const nn = document.getElementById('nn').value;
+                const address = document.getElementById('address').value;
+                const signPlaceDate = document.getElementById('signPlaceDate').value;
+
+                // Données chiffrées
+                const nb012 = document.getElementById('nb_012').value || "";
+                const base012 = parseFloat(document.getElementById('base_012').value) || 0;
+                const tax012 = base012 > 0 ? (base012 * 0.0012).toFixed(2) : "";
+
+                const nb035 = document.getElementById('nb_035').value || "";
+                const base035 = parseFloat(document.getElementById('base_035').value) || 0;
+                const tax035 = base035 > 0 ? (base035 * 0.0035).toFixed(2) : "";
+
+                const nb132 = document.getElementById('nb_132').value || "";
+                const base132 = parseFloat(document.getElementById('base_132').value) || 0;
+                const tax132 = base132 > 0 ? (base132 * 0.0132).toFixed(2) : "";
+
+                const totalTax = (Number(tax012) + Number(tax035) + Number(tax132)).toFixed(2);
+
+                const fontSize = 10;
+                
+
+                if(month) firstPage.drawText(month, { x: 295, y: 690, size: fontSize }); 
+                if(year)  firstPage.drawText(year,  { x: 270, y: 690, size: fontSize }); 
+                
+                
+                // Numéro national
+                firstPage.drawText(nn, { x: 305, y: 585, size: fontSize });
+                // Nom
+                firstPage.drawText(name, { x: 305, y: 575, size: fontSize });
+                // Adresse
+                firstPage.drawText(address, { x: 305, y: 552, size: fontSize });
+
+                // 3. TABLEAU (Milieu bas)
+                // Les colonnes X restent à peu près ok : Nombre (340), Base (430), Taxe (530)
+                // Les lignes Y doivent descendre SOUS le titre "Calcul de la taxe..."
+                
+                // Ligne 0.12% (Était 485 -> Nouveau 412)
+                if(nb012) firstPage.drawText(nb012.toString(), { x: 340, y: 412, size: fontSize });
+                if(base012) firstPage.drawText(base012.toFixed(2), { x: 430, y: 412, size: fontSize });
+                if(tax012) firstPage.drawText(tax012.toString(), { x: 530, y: 412, size: fontSize });
+
+                // Ligne 0.35% (Était 460 -> Nouveau 392)
+                if(nb035) firstPage.drawText(nb035.toString(), { x: 340, y: 392, size: fontSize });
+                if(base035) firstPage.drawText(base035.toFixed(2), { x: 430, y: 392, size: fontSize });
+                if(tax035) firstPage.drawText(tax035.toString(), { x: 530, y: 392, size: fontSize });
+
+                // Ligne 1.32% (Était 435 -> Nouveau 372)
+                if(nb132) firstPage.drawText(nb132.toString(), { x: 340, y: 372, size: fontSize });
+                if(base132) firstPage.drawText(base132.toFixed(2), { x: 430, y: 372, size: fontSize });
+                if(tax132) firstPage.drawText(tax132.toString(), { x: 530, y: 372, size: fontSize });
+
+                // Total (a) (Était 370 -> Nouveau 320)
+                if(totalTax > 0) firstPage.drawText(totalTax, { x: 530, y: 320, size: fontSize, color: rgb(0, 0, 0) });
+
+                // 4. PAGE 2
+                // Total reporté
+                if(totalTax > 0) secondPage.drawText(totalTax, { x: 500, y: 650, size: fontSize }); // Ajusté à vue de nez
+                // Signature
+                secondPage.drawText(signPlaceDate, { x: 120, y: 250, size: fontSize });
+
+
+                // --- DEBUGGER (Décommentez la ligne ci-dessous pour voir la grille) ---
+                // drawGrid(firstPage); 
+
+                const pdfBytes = await pdfDoc.save();
+                const blob = new Blob([pdfBytes], { type: "application/pdf" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = `TOB_${month}_${year || '2026'}.pdf`; 
+                link.click();
+
+            } catch (err) {
+                alert("Erreur : " + err.message);
+            }
+        }
+
+        // --- OUTIL D'AIDE AU CALIBRAGE ---
+        // Cette fonction dessine une grille rouge sur le PDF pour lire les coordonnées Y
+        function drawGrid(page) {
+            const { width, height } = page.getSize();
+            const fontSize = 8;
+            
+            // Lignes horizontales tous les 50 points
+            for (let y = 0; y < height; y += 20) {
+                page.drawLine({
+                    start: { x: 0, y },
+                    end: { x: 100, y }, // Petite ligne sur le côté gauche
+                    thickness: 1,
+                    color: rgb(1, 0, 0),
+                    opacity: 0.5,
+                });
+                page.drawText(y.toString(), { x: 5, y: y + 2, size: fontSize, color: rgb(1, 0, 0) });
+            }
+        }
+    </script>
+</body>
+</html>

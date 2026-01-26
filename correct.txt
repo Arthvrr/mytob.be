@@ -1,0 +1,10 @@
+if(month) firstPage.drawText(month, { x: 295, y: 690, size: fontSize }); 
+if(year)  firstPage.drawText(year,  { x: 270, y: 690, size: fontSize }); 
+
+
+// Numéro national
+firstPage.drawText(nn, { x: 305, y: 585, size: fontSize });
+// Nom
+firstPage.drawText(name, { x: 305, y: 575, size: fontSize });
+// Adresse
+firstPage.drawText(address, { x: 305, y: 552, size: fontSize });
