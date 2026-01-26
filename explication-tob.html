@@ -19,6 +19,7 @@
         .prose ul { margin-bottom: 1.5rem; list-style-type: disc; padding-left: 1.5rem; color: #334155; }
         .prose li { margin-bottom: 0.5rem; }
         .highlight-box { background-color: #F8FAFC; border-left: 4px solid #059669; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+        .warning-box { background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
     </style>
 </head>
 <body class="bg-white text-slate-800 flex flex-col min-h-screen">
@@ -31,8 +32,14 @@
             </a>
             
             <div class="flex items-center space-x-4">
-                <a href="index.html" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-sm shadow-emerald-100">
-                    Accéder au formulaire
+                <a href="explication-tob.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Comprendre la TOB
+                </a>
+                <a href="dividende.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Dividendes
+                </a>
+                <a href="compte-etranger.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Comptes Étrangers
                 </a>
             </div>
         </div>
@@ -63,7 +70,8 @@
             </p>
             <div class="highlight-box">
                 <p class="mb-0 font-medium">
-                    ⚠️ <strong>Règle d'or :</strong> La taxe est due dans les deux mois suivant la transaction. Si vous achetez une action en Janvier, vous devez déclarer et payer avant le 31 Mars.
+                    ⚠️ <strong>Règle d'or :</strong> La taxe est due au plus tard le dernier jour ouvrable du <strong>deuxième mois suivant</strong> la transaction.
+                    <br><span class="text-sm font-normal text-slate-600 block mt-1">Exemple : Vous achetez une action en Juillet. Vous avez jusqu'au 30 Septembre pour déclarer et payer.</span>
                 </p>
             </div>
 
@@ -77,22 +85,21 @@
             <ul>
                 <li><strong>Obligations :</strong> Toute obligation d'état ou d'entreprise (marché secondaire).</li>
                 <li><strong>ETF de Distribution :</strong> Les fonds qui versent des dividendes périodiques.</li>
-                <li><strong>ETF de Capitalisation (enregistrés en Belgique) :</strong> <em>Attention, c'est ici que ça se corse.</em> Si un ETF de capitalisation est inscrit sur la liste du SPF Finances, il passe souvent à 1,32%. Mais certains trackers spécifiques restent à 0,12% s'ils ne sont pas considérés comme des "SICAV" au sens strict. Dans le doute, pour un ETF Distributif, c'est presque toujours 0,12%.</li>
+                <li><strong>ETF de Capitalisation (enregistrés en Belgique) :</strong> Si un ETF de capitalisation est inscrit sur la liste du SPF Finances mais n'est pas une SICAV au sens strict. Dans le doute, un ETF Distributif est presque toujours à 0,12%.</li>
             </ul>
 
             <h3>B. Le taux de 0,35 % (Plafond : 1.600 €)</h3>
             <p>C'est le taux le plus courant pour les "Stock Pickeurs". Il concerne :</p>
             <ul>
                 <li><strong>Actions :</strong> Toutes les actions individuelles (Apple, LVMH, Tesla, etc.).</li>
-                <li><strong>Certificats & Trackers (Mixed) :</strong> Certains produits structurés.</li>
-                <li><strong>ETF de Capitalisation (NON enregistrés en Belgique) :</strong> C'est le cas de figure le plus recherché. Si votre ETF accumule les dividendes (Acc) mais n'est pas enregistré auprès de la FSMA en Belgique, le taux est de 0,35% au lieu de 1,32%. C'est pourquoi des ETF comme le <em>VWCE</em> (Vanguard FTSE All-World) ont longtemps fait débat.</li>
+                <li><strong>ETF de Capitalisation (NON enregistrés en Belgique) :</strong> C'est le cas très recherché. Si votre ETF accumule les dividendes (Acc) mais n'est pas enregistré auprès de la FSMA en Belgique (comme le VWCE sur certaines places), le taux est de 0,35% au lieu de 1,32%.</li>
             </ul>
 
             <h3>C. Le taux de 1,32 % (Plafond : 4.000 €)</h3>
             <p>Le taux "punitif" pour les produits de capitalisation enregistrés localement :</p>
             <ul>
                 <li><strong>Fonds de Capitalisation (BE) :</strong> La plupart des fonds bancaires classiques belges.</li>
-                <li><strong>ETF de Capitalisation (Enregistrés) :</strong> Si l'ETF est enregistré en Belgique, le fisc applique ce taux maximal. C'est souvent le cas pour les versions très populaires de l'iShares Core MSCI World sur certaines places boursières.</li>
+                <li><strong>ETF de Capitalisation (Enregistrés) :</strong> Si l'ETF est enregistré en Belgique, le fisc applique ce taux maximal. C'est souvent le cas pour les versions populaires de l'iShares Core MSCI World.</li>
             </ul>
 
             <h2>3. Comment calculer la base imposable ?</h2>
@@ -101,18 +108,35 @@
             </p>
             <ul>
                 <li><strong>Formule :</strong> <code>Prix unitaire x Quantité</code></li>
-                <li><strong>Exemple :</strong> Vous achetez 10 actions à 100 €. Le montant est de 1.000 €.</li>
-                <li><strong>Exclusion des frais :</strong> Vous ne devez PAS inclure les frais de courtage (courtage, frais de change, etc.) dans la base imposable. Si Degiro vous facture 3€ de frais, la taxe se calcule sur 1.000 €, pas 1.003 €.</li>
+                <li><strong>Exclusion des frais :</strong> La taxe se calcule sur le montant net, <strong>HORS frais de courtage</strong>. Si vous achetez pour 1000€ d'actions et que Degiro facture 3€ de frais, la taxe se base sur 1000€.</li>
+                <li><strong>Devises étrangères :</strong> Si vous achetez en USD, vous devez convertir le montant en EUR en utilisant le <strong>taux de change de la BCE du jour de la transaction</strong>.</li>
             </ul>
 
-            <h2>4. La procédure de paiement</h2>
+            <h2>4. Remplir le formulaire : les astuces</h2>
+            <p>Le formulaire officiel peut être déroutant. Voici comment le remplir avec notre outil :</p>
+            <ul>
+                <li><strong>Identification :</strong> Vous agissez en tant que particulier. Sur le papier, il faut biffer les mentions "intermédiaire professionnel" et "représentant responsable" pour ne laisser que <strong>"donneur d'ordre"</strong>.</li>
+                <li><strong>Tableaux :</strong> Vous devez regrouper toutes les opérations d'un même taux. Si vous avez fait 3 achats à 0,35%, vous additionnez les montants pour n'écrire qu'une seule ligne.</li>
+            </ul>
+
+            <div class="warning-box">
+                <h4 class="font-bold text-red-800 mb-2">Que se passe-t-il si je ne paie pas ?</h4>
+                <p class="text-red-900 text-sm mb-2">Le non-paiement est risqué. Les amendes sont dissuasives :</p>
+                <ul class="list-disc pl-4 text-red-800 text-sm mb-0">
+                    <li><strong>Dépôt tardif :</strong> 50 € par semaine de retard (max 2.600 €).</li>
+                    <li><strong>Déclaration incorrecte :</strong> Amende de 5 fois le montant éludé (min 250 €).</li>
+                    <li><strong>Intérêts :</strong> 7% par an à partir du jour où le paiement aurait dû être fait.</li>
+                </ul>
+            </div>
+
+            <h2>5. Oups, j'ai oublié de payer... Que faire ?</h2>
             <p>
-                Une fois votre PDF généré via notre outil <strong>MyTOB</strong> :
+                Pas de panique. Si vous vous en rendez compte spontanément avant un contrôle, le fisc belge est généralement clément pour une première erreur.
             </p>
             <ol class="list-decimal pl-6 space-y-2 text-slate-700">
-                <li>Imprimez le formulaire (ou signez-le numériquement).</li>
-                <li>Envoyez-le par email au bureau compétent du SPF Finances (l'adresse email <em>CPIC.TAXDIV@minfin.fed.be</em> figure souvent sur les formulaires, vérifiez la notice actuelle).</li>
-                <li>Effectuez le virement bancaire vers le compte du SPF Finances (indiqué sur le PDF généré) avec en communication structurée ou libre : <em>"TOB [Mois]/[Année] - [Votre Numéro National]"</em>.</li>
+                <li><strong>Reconnaissez le retard :</strong> Ne faites pas l'autruche. Agissez tout de suite.</li>
+                <li><strong>Calculez et Payez :</strong> Utilisez notre générateur pour créer la déclaration des mois manquants et effectuez le virement immédiatement.</li>
+                <li><strong>Contactez le SPF :</strong> Envoyez un email à <em>CPIC.TAXDIV@minfin.fed.be</em> avec vos déclarations en expliquant votre bonne foi et en demandant la levée des pénalités pour ce premier oubli.</li>
             </ol>
 
             <div class="mt-12 pt-8 border-t border-slate-200 text-center">
@@ -129,7 +153,7 @@
     <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <p class="text-slate-600 text-sm font-medium">
-                &copy; <a href="https://stockspickeur.eu">2026 StocksPickeur</a>. Fait avec passion en Belgique 🇧🇪
+                &copy; <a href="https://stockspickeur.eu" class="hover:text-emerald-600 transition">2026 StocksPickeur</a>. Fait avec passion en Belgique 🇧🇪
             </p>
         </div>
     </footer>

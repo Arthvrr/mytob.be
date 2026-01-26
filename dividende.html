@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprendre la Taxe sur les Dividendes | MyTOB.be</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .prose p { margin-bottom: 1.5rem; line-height: 1.75; color: #334155; }
+        .prose h2 { margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #0f172a; font-size: 1.5rem; letter-spacing: -0.025em; }
+        .prose h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; color: #1e293b; font-size: 1.125rem; }
+        .prose ul { margin-bottom: 1.5rem; list-style-type: disc; padding-left: 1.5rem; color: #334155; }
+        .prose li { margin-bottom: 0.5rem; }
+        .highlight-box { background-color: #F8FAFC; border-left: 4px solid #059669; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+        .calc-box { background-color: #F1F5F9; border: 1px solid #E2E8F0; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0.75rem; font-family: 'Courier New', monospace; font-size: 0.95rem; }
+        .warning-box { background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+    </style>
+</head>
+<body class="bg-white text-slate-800 flex flex-col min-h-screen">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="icon.png" alt="Logo" class="h-12 w-auto"> 
+                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span>.be</span>
+            </a>
+            
+            <div class="flex items-center space-x-4">
+                <a href="explication-tob.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Comprendre la TOB
+                </a>
+                <a href="dividende.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Dividendes
+                </a>
+                <a href="compte-etranger.html" class="hidden md:block text-sm font-medium text-slate-600 hover:text-emerald-600 transition">
+                    Compte Étrangers
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="bg-slate-50 border-b border-slate-100 py-16 px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <span class="text-emerald-600 font-semibold tracking-wide uppercase text-xs">Fiscalité Belge</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mt-3 mb-6 leading-tight">
+                    Dividendes & Précompte Mobilier : Le Guide
+                </h1>
+                <p class="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                    30% de taxe, double imposition et exonération de 833€... Tout ce qu'il faut savoir avant d'acheter des actions à dividendes.
+                </p>
+            </div>
+        </div>
+
+        <article class="max-w-3xl mx-auto px-6 py-12 prose text-justify">
+            
+            <p class="text-lg">
+                Contrairement à la TOB qui est une taxe sur la <em>transaction</em>, la taxe sur les dividendes (Précompte Mobilier) est une taxe sur le <em>bénéfice</em> distribué. Si vous utilisez un courtier étranger (Degiro, Trade Republic, IBKR), vous devez souvent gérer cela vous-même via votre déclaration fiscale annuelle.
+            </p>
+
+            <h2>1. La règle de base : 30% pour l'État belge</h2>
+            <p>
+                En Belgique, le taux standard du précompte mobilier est de <strong>30%</strong>.
+            </p>
+            <ul>
+                <li><strong>Courtier Belge (Bolero, Saxo) :</strong> Ils retiennent ces 30% à la source. Vous recevez le montant net. Vous n'avez <strong>rien à faire</strong>.</li>
+                <li><strong>Courtier Étranger (Degiro, Trade Republic) :</strong> Ils ne prélèvent généralement PAS les 30% belges. Vous recevez le montant brut (ou semi-net après taxe étrangère). Vous <strong>devez déclarer</strong> ce montant l'année suivante.</li>
+            </ul>
+
+            <h2>2. Le piège de la Double Imposition (Actions US, FR...)</h2>
+            <p>
+                Si vous achetez des actions étrangères (ex: Coca-Cola aux USA, LVMH en France), le pays d'origine prélève <em>aussi</em> une taxe à la source.
+            </p>
+            
+            <h3>L'exemple des USA (Avec formulaire W-8BEN)</h3>
+            <p>
+                Grâce à la convention préventive de double imposition, si vous remplissez le formulaire W-8BEN (souvent automatique chez Degiro/Trade Republic), la taxe US descend de 30% à 15%. Mais la Belgique veut quand même ses 30% sur le reste.
+            </p>
+
+            <div class="calc-box">
+                <strong class="text-slate-900">Exemple : Dividende brut de 100 € (USA)</strong><br><br>
+                1. Taxe Source US (15%) : -15 €<br>
+                -----------------------------------<br>
+                = Montant perçu sur le compte : 85 € (Net Frontière)<br><br>
+                
+                ⚠️ <strong>Ce n'est pas fini !</strong><br>
+                Vous devez payer 30% de taxe belge sur ces 85 €.<br><br>
+                
+                2. Taxe Belge (30% de 85€) : -25,50 €<br>
+                -----------------------------------<br>
+                <strong>= Montant FINAL dans votre poche : 59,50 €</strong>
+            </div>
+
+            <p>
+                <strong>Conclusion :</strong> Sur 100€ de dividende US, vous ne gardez que 59,50€. C'est un taux d'imposition réel de <strong>40,5%</strong>. C'est pourquoi chez StocksPickeur, nous privilégions souvent les <strong>ETF Capitalisants</strong> (qui réinvestissent le dividende sans passer par la case impôt).
+            </p>
+
+            <h2>3. Le cadeau fiscal : L'exonération de 833 €</h2>
+            <p>
+                L'État belge permet de récupérer le précompte mobilier payé sur les premiers <strong>833 €</strong> de dividendes perçus (montant indexé, exercice d'imposition 2026 revenus 2025).
+            </p>
+            <ul>
+                <li><strong>Cela représente un gain max de :</strong> 833 € x 30% = <strong>249,90 €</strong> d'impôts économisés.</li>
+                <li><strong>Comment en profiter ?</strong> Si votre courtier belge a déjà prélevé la taxe, vous la récupérez via votre déclaration fiscale. Si vous êtes chez un courtier étranger et que vous n'avez pas encore payé la taxe belge, vous ne déclarez simplement pas les premiers 833€.</li>
+            </ul>
+
+            <div class="warning-box">
+                <h4 class="font-bold text-red-800 mb-2">Attention : Ce qui est EXCLU</h4>
+                <p class="text-red-900 text-sm mb-0">
+                    Cette exonération de 833 € ne s'applique <strong>PAS</strong> aux dividendes :
+                    <br>• Des ETF (Fonds)
+                    <br>• Des trackers
+                    <br>• Des fonds communs de placement
+                    <br><br>
+                    Elle ne concerne que les <strong>actions individuelles</strong> (ex: Apple, Solvay, KBC).
+                </p>
+            </div>
+
+            <h2>4. Comment remplir sa déclaration fiscale (Tax-on-web)</h2>
+            <p>
+                Ceci se fait une fois par an (généralement en juin), pour les revenus de l'année précédente.
+            </p>
+            
+            <h3>Cas A : Vous avez des actions individuelles (Exonération possible)</h3>
+            <p>
+                Vous ne devez déclarer que les dividendes qui <strong>dépassent</strong> la tranche de 833 €.
+                <br><em>Exemple : Vous avez reçu 1.000 € de dividendes "Net Frontière" (après taxe US). Les premiers 833 € sont exonérés. Vous déclarez uniquement les 167 € restants.</em>
+            </p>
+
+            <h3>Cas B : Vous avez des ETF Distributifs (Pas d'exonération)</h3>
+            <p>
+                Vous devez déclarer <strong>tout</strong> le montant net perçu (après taxe source étrangère).
+            </p>
+
+            <h3>Les Codes à utiliser (Cadre VII)</h3>
+            <ul>
+                <li><strong>Code 1444 / 2444 :</strong> C'est ici qu'on déclare les dividendes ordinaires soumis à 30% qui n'ont pas subi de retenue à la source en Belgique.</li>
+            </ul>
+
+            <div class="highlight-box">
+                <p class="mb-0 font-medium">
+                    💡 <strong>Conseil Pro :</strong> Tenez un fichier Excel tout au long de l'année avec : Date, Nom Action, Dividende Brut, Taxe Pays Source, Montant Reçu. Cela vous sauvera la vie en juin lors de la déclaration fiscale.
+                </p>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-slate-200 text-center">
+                <h3 class="mb-4">Assez parlé fiscalité, place à l'action.</h3>
+                <p class="text-slate-500 mb-6">Vous avez des transactions en attente de déclaration TOB ?</p>
+                <a href="index.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-emerald-600 rounded-xl hover:bg-emerald-700 hover:shadow-lg hover:-translate-y-1">
+                    Retourner au Générateur TOB
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <p class="text-slate-600 text-sm font-medium">
+                &copy; <a href="https://stockspickeur.eu" class="hover:text-emerald-600 transition">2026 StocksPickeur</a>. Fait avec passion en Belgique 🇧🇪
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
