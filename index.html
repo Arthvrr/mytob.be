@@ -18,7 +18,6 @@
         .scroller::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJSM6MXSMQ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -28,6 +27,8 @@
   gtag('config', 'G-EJSM6MXSMQ');
 </script>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-3 pointer-events-none"></div>
 
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -41,6 +42,7 @@
                 <a href="dividende.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
                 <a href="compte-etranger.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
                 <a href="autres-taxes.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Autres Taxes</a>
+                <a href="faq.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
             </div>
 
             <button id="mobileMenuBtn" class="md:hidden flex items-center text-slate-600 hover:text-emerald-600 focus:outline-none">
@@ -54,7 +56,7 @@
             <a href="explication-tob.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comprendre la TOB</a>
             <a href="dividende.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
             <a href="compte-etranger.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
-            <a href="autres-taxes.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Autres Taxes</a>
+            <a href="faq.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
         </div>
     </header>
 
@@ -190,20 +192,32 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-2 text-center text-xs text-slate-500 border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="block font-bold text-blue-600 text-lg" id="summary_012">0,00 €</span>
-                            Total Base 0,12%
+                    <div class="mt-4 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">
+                            <span>Base imposable globale</span>
+                            <span id="totalBase" class="text-slate-800 text-sm">0,00 €</span>
                         </div>
-                        <div>
-                            <span class="block font-bold text-orange-600 text-lg" id="summary_035">0,00 €</span>
-                            Total Base 0,35%
+                        <div class="w-full h-3 bg-slate-100 rounded-full flex overflow-hidden shadow-inner">
+                            <div id="bar_012" class="bg-blue-500 h-full transition-all duration-500" style="width: 0%"></div>
+                            <div id="bar_035" class="bg-orange-500 h-full transition-all duration-500" style="width: 0%"></div>
+                            <div id="bar_132" class="bg-red-500 h-full transition-all duration-500" style="width: 0%"></div>
                         </div>
-                        <div>
-                            <span class="block font-bold text-red-600 text-lg" id="summary_132">0,00 €</span>
-                            Total Base 1,32%
+                        <div class="grid grid-cols-3 gap-2 text-center text-xs mt-4">
+                            <div>
+                                <span class="inline-block w-2.5 h-2.5 bg-blue-500 rounded-full mr-1"></span>0,12%<br>
+                                <span id="summary_012" class="font-bold text-slate-700">0,00 €</span>
+                            </div>
+                            <div>
+                                <span class="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full mr-1"></span>0,35%<br>
+                                <span id="summary_035" class="font-bold text-slate-700">0,00 €</span>
+                            </div>
+                            <div>
+                                <span class="inline-block w-2.5 h-2.5 bg-red-500 rounded-full mr-1"></span>1,32%<br>
+                                <span id="summary_132" class="font-bold text-slate-700">0,00 €</span>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="p-8">
@@ -264,7 +278,6 @@
         </div>
     </main>
 
-
     <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <p class="text-slate-600 text-sm font-medium">
@@ -274,6 +287,28 @@
     </footer>
 
     <script>
+        // --- 🍞 SYSTÈME DE NOTIFICATIONS (TOASTS) ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-emerald-600';
+            const icon = type === 'error' ? '⚠️' : '✅';
+            
+            toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg flex items-center space-x-2 transform translate-y-10 opacity-0 transition-all duration-300 ease-out pointer-events-auto`;
+            toast.innerHTML = `<span class="text-lg">${icon}</span><span class="text-sm font-medium">${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            // Animation d'entrée
+            setTimeout(() => { toast.classList.remove('translate-y-10', 'opacity-0'); }, 10);
+            
+            // Disparition après 3s
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
         // --- 💾 SAUVEGARDE LOCALE (LocalStorage) ---
         const savedFields = ['name', 'nn', 'address', 'signCity'];
 
@@ -289,10 +324,9 @@
             // Date du jour par défaut
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('signDate').value = today;
-            updateMailLink(); // Appel initial pour l'email
+            updateMailLink();
         });
 
-        // Écouter les changements pour sauvegarder et màj l'email
         const allTrackedFields = [...savedFields, 'month', 'year'];
         allTrackedFields.forEach(id => {
             document.getElementById(id).addEventListener('input', (e) => {
@@ -338,7 +372,7 @@
             const rate = rateInput.value;
 
             if (!amount || amount <= 0) {
-                alert("Veuillez entrer un montant valide.");
+                showToast("Veuillez entrer un montant valide.", "error");
                 return;
             }
 
@@ -349,6 +383,7 @@
             });
 
             amountInput.value = "";
+            showToast("Transaction ajoutée", "success");
             renderTransactions();
         }
 
@@ -357,12 +392,12 @@
             renderTransactions();
         }
 
-        // --- 🗑️ VIDER TOUTES LES TRANSACTIONS ---
         function clearAllTransactions() {
             if (transactions.length === 0) return;
             if (confirm("Voulez-vous vraiment effacer toutes les transactions ajoutées ?")) {
                 transactions = [];
                 renderTransactions();
+                showToast("Toutes les transactions ont été effacées.", "success");
             }
         }
 
@@ -397,11 +432,23 @@
             updateSummaries();
         }
 
+        // --- 📊 DASHBOARD UPDATER ---
         function updateSummaries() {
             const stats = calculateStats();
-            document.getElementById('summary_012').innerText = stats['0.12'].total.toFixed(2) + " €";
-            document.getElementById('summary_035').innerText = stats['0.35'].total.toFixed(2) + " €";
-            document.getElementById('summary_132').innerText = stats['1.32'].total.toFixed(2) + " €";
+            
+            const b012 = stats['0.12'].total;
+            const b035 = stats['0.35'].total;
+            const b132 = stats['1.32'].total;
+            const total = b012 + b035 + b132;
+
+            document.getElementById('totalBase').innerText = total.toFixed(2) + " €";
+            document.getElementById('summary_012').innerText = b012.toFixed(2) + " €";
+            document.getElementById('summary_035').innerText = b035.toFixed(2) + " €";
+            document.getElementById('summary_132').innerText = b132.toFixed(2) + " €";
+
+            document.getElementById('bar_012').style.width = total > 0 ? (b012/total*100) + "%" : "0%";
+            document.getElementById('bar_035').style.width = total > 0 ? (b035/total*100) + "%" : "0%";
+            document.getElementById('bar_132').style.width = total > 0 ? (b132/total*100) + "%" : "0%";
         }
 
         function calculateStats() {
@@ -580,8 +627,10 @@
                 link.download = `TOB_${month || 'XX'}_${year || '2026'}.pdf`; 
                 link.click();
 
+                showToast("PDF généré avec succès !", "success");
+
             } catch (err) {
-                alert("Erreur : " + err.message);
+                showToast("Erreur lors de la création du PDF.", "error");
                 console.error(err);
             }
         }
