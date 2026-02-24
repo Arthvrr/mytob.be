@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur TOB | MyTOB.be</title>
-    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <link rel="icon" type="image/x-icon" href="logo-black.ico">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -80,7 +80,16 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Mois</label>
+                            <label class="flex items-center text-sm font-medium text-slate-700 mb-1">
+                                Mois
+                                <div class="relative group inline-block ml-1">
+                                    <span class="text-slate-400 cursor-help text-xs bg-slate-100 rounded-full w-4 h-4 inline-flex items-center justify-center border border-slate-200">❔</span>
+                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none">
+                                        Mois pendant lequel les transactions ont été exécutées (ex: 01, 02...).
+                                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
+                                    </div>
+                                </div>
+                            </label>
                             <input type="text" id="month" placeholder="Ex: 01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
@@ -92,15 +101,24 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nom et Prénom</label>
-                            <input type="text" id="name" placeholder="Jean Dupont" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 save-local">
+                            <input type="text" id="name" placeholder="Jean Dupont" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Numéro de Registre National (NN)</label>
-                            <input type="text" id="nn" placeholder="00.00.00-000.00" maxlength="15" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 save-local">
+                            <label class="flex items-center text-sm font-medium text-slate-700 mb-1">
+                                Numéro de Registre National (NN)
+                                <div class="relative group inline-block ml-1">
+                                    <span class="text-slate-400 cursor-help text-xs bg-slate-100 rounded-full w-4 h-4 inline-flex items-center justify-center border border-slate-200">❔</span>
+                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none">
+                                        Numéro à 11 chiffres situé au dos de votre carte d'identité belge.
+                                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
+                                    </div>
+                                </div>
+                            </label>
+                            <input type="text" id="nn" placeholder="00.00.00-000.00" maxlength="15" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Adresse complète</label>
-                            <input type="text" id="address" placeholder="Rue de la Loi 16, 1000 Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 save-local">
+                            <input type="text" id="address" placeholder="Rue de la Loi 16, 1000 Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
                 </div>
@@ -114,11 +132,29 @@
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Montant Transaction (€)</label>
+                                <label class="flex items-center text-xs font-semibold text-slate-500 uppercase mb-1">
+                                    Montant Transaction (€)
+                                    <div class="relative group inline-block ml-1">
+                                        <span class="text-slate-400 cursor-help text-[10px] bg-slate-100 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center border border-slate-200">❔</span>
+                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none normal-case">
+                                            Total brut de l'ordre (Prix x Quantité). N'incluez pas les frais de courtage.
+                                            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
+                                        </div>
+                                    </div>
+                                </label>
                                 <input type="number" id="newAmount" placeholder="1000.00" step="0.01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Taux Applicable</label>
+                                <label class="flex items-center text-xs font-semibold text-slate-500 uppercase mb-1">
+                                    Taux Applicable
+                                    <div class="relative group inline-block ml-1">
+                                        <span class="text-slate-400 cursor-help text-[10px] bg-slate-100 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center border border-slate-200">❔</span>
+                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none normal-case">
+                                            0,12% : Oblig / ETF Dist<br>0,35% : Actions / ETF Acc<br>1,32% : Fonds enregistrés BE
+                                            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
+                                        </div>
+                                    </div>
+                                </label>
                                 <select id="newRate" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer">
                                     <option value="0.35">0,35 % (Actions, ETF Acc)</option>
                                     <option value="0.12">0,12 % (Obligations, ETF Dist)</option>
@@ -170,7 +206,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Fait à (Ville)</label>
-                            <input type="text" id="signCity" placeholder="Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 save-local">
+                            <input type="text" id="signCity" placeholder="Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Date de signature</label>
@@ -205,21 +241,20 @@
                 </div>
             </div>
 
-            <div class="mt-8 text-center bg-emerald-50 border border-emerald-100 rounded-xl p-4 max-w-lg mx-auto">
-                <p class="text-emerald-800 text-sm font-medium mb-2">
-                    Une fois votre PDF généré et signé, envoyez-le ici :
+            <div class="mt-8 text-center bg-emerald-50 border border-emerald-100 rounded-xl p-6 max-w-lg mx-auto shadow-sm">
+                <p class="text-emerald-800 text-sm font-bold mb-3">
+                    Étape finale : Envoyez votre PDF au SPF Finances
                 </p>
-                <a id="emailLink" href="mailto:CPIC.TAXDIV@minfin.fed.be?subject=Déclaration TOB" class="inline-flex items-center text-emerald-600 font-bold hover:text-emerald-800 hover:underline transition">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    CPIC.TAXDIV@minfin.fed.be
+                <a id="emailLink" href="mailto:CPIC.TAXDIV@minfin.fed.be" class="inline-flex items-center text-white bg-emerald-600 hover:bg-emerald-700 font-medium py-2 px-6 rounded-lg transition shadow">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Ouvrir ma boîte mail
                 </a>
+                <p class="text-xs text-emerald-600 mt-3 italic">L'email sera pré-rempli avec vos coordonnées.<br>N'oubliez pas de mettre le PDF en pièce jointe !</p>
             </div>
             
-            <p class="text-center text-slate-400 text-sm mt-8 max-w-2xl mx-auto">
-                Cet outil est fourni à titre indicatif. Vérifiez toujours l'exactitude des données.
-            </p>
         </div>
     </main>
+
 
     <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
         <div class="max-w-4xl mx-auto px-6 text-center">
@@ -229,13 +264,11 @@
         </div>
     </footer>
 
-
     <script>
         // --- 💾 SAUVEGARDE LOCALE (LocalStorage) ---
         const savedFields = ['name', 'nn', 'address', 'signCity'];
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Remplir avec les données sauvegardées
             savedFields.forEach(id => {
                 const el = document.getElementById(id);
                 const savedVal = localStorage.getItem('mytob_' + id);
@@ -247,23 +280,25 @@
             // Date du jour par défaut
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('signDate').value = today;
+            updateMailLink(); // Appel initial pour l'email
         });
 
-        // Écouter les changements pour sauvegarder
-        savedFields.forEach(id => {
+        // Écouter les changements pour sauvegarder et màj l'email
+        const allTrackedFields = [...savedFields, 'month', 'year'];
+        allTrackedFields.forEach(id => {
             document.getElementById(id).addEventListener('input', (e) => {
-                localStorage.setItem('mytob_' + id, e.target.value);
+                if (savedFields.includes(id)) {
+                    localStorage.setItem('mytob_' + id, e.target.value);
+                }
+                updateMailLink();
             });
         });
 
-
         // --- ✨ FORMATAGE AUTO DU NUMÉRO NATIONAL (NN) ---
         document.getElementById('nn').addEventListener('input', function (e) {
-            // Ne garder que les chiffres
             let val = e.target.value.replace(/\D/g, ''); 
             let formatted = '';
 
-            // Format : XX.XX.XX-XXX.XX
             if (val.length > 0) formatted += val.substring(0, 2);
             if (val.length > 2) formatted += '.' + val.substring(2, 4);
             if (val.length > 4) formatted += '.' + val.substring(4, 6);
@@ -271,11 +306,9 @@
             if (val.length > 9) formatted += '.' + val.substring(9, 11);
             
             e.target.value = formatted;
-            
-            // On sauvegarde aussi la version formatée
             localStorage.setItem('mytob_nn', formatted);
+            updateMailLink();
         });
-
 
         // --- MENU MOBILE ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -535,7 +568,7 @@
                 const blob = new Blob([pdfBytes], { type: "application/pdf" });
                 const link = document.createElement("a");
                 link.href = URL.createObjectURL(blob);
-                link.download = `TOB_${month}_${year || '2026'}.pdf`; 
+                link.download = `TOB_${month || 'XX'}_${year || '2026'}.pdf`; 
                 link.click();
 
             } catch (err) {
@@ -544,16 +577,19 @@
             }
         }
     
+        // --- 💌 EMAIL 100% PRÉ-REMPLI ---
         function updateMailLink() {
-            const m = document.getElementById('month').value || "...";
-            const y = document.getElementById('year').value || "...";
+            const m = document.getElementById('month').value || "[Mois]";
+            const y = document.getElementById('year').value || "[Année]";
+            const name = document.getElementById('name').value || "[Votre Nom]";
+            const nn = document.getElementById('nn').value || "[Votre Registre National]";
+            
+            const subject = `Déclaration TOB - ${m}/${y} - ${name}`;
+            const body = `Bonjour,\n\nVeuillez trouver en pièce jointe ma déclaration de Taxe sur les Opérations de Bourse (TOB) pour la période de ${m}/${y}.\n\nMon numéro de registre national est le : ${nn}\n\nBien à vous,\n\n${name}`;
+            
             const link = document.getElementById('emailLink');
-            const subject = `Déclaration TOB mois ${m}/${y}`;
-            link.href = `mailto:CPIC.TAXDIV@minfin.fed.be?subject=${encodeURIComponent(subject)}`;
+            link.href = `mailto:CPIC.TAXDIV@minfin.fed.be?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
-
-        document.getElementById('month').addEventListener('input', updateMailLink);
-        document.getElementById('year').addEventListener('input', updateMailLink);
     </script>
 </body>
 </html>
