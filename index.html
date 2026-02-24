@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,19 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+        // Éviter le flash blanc au chargement si le mode sombre est activé
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -17,6 +30,7 @@
         canvas { touch-action: none; }
         .scroller::-webkit-scrollbar { width: 6px; }
         .scroller::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+        .dark .scroller::-webkit-scrollbar-thumb { background-color: #475569; }
     </style>
 </head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJSM6MXSMQ"></script>
@@ -26,64 +40,92 @@
   gtag('js', new Date());
   gtag('config', 'G-EJSM6MXSMQ');
 </script>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col min-h-screen transition-colors duration-200">
 
-    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-3 pointer-events-none"></div>
+    <div id="toast-container" class="fixed bottom-4 right-4 z-[100] flex flex-col space-y-3 pointer-events-none"></div>
 
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div id="historyModal" class="hidden fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[80vh]">
+            <div class="p-5 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+                <h3 class="font-bold text-lg text-slate-800 dark:text-white">📂 Historique des PDF générés</h3>
+                <button onclick="closeHistory()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto scroller flex-grow">
+                <div id="historyList" class="space-y-3">
+                    </div>
+            </div>
+            <div class="p-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-center">
+                <button onclick="clearHistory()" class="text-sm font-medium text-red-500 hover:text-red-600 transition">Effacer l'historique</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 transition-colors duration-200">
         <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-2">
                 <img src="icon.png" alt="Logo" class="h-12 w-auto"> 
-                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span>.be</span>
+                <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">My<span class="text-emerald-600">TOB</span>.be</span>
             </a>
             
-            <div class="hidden md:flex items-center space-x-4">
-                <a href="explication-tob.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Comprendre la TOB</a>
-                <a href="dividende.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
-                <a href="compte-etranger.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
-                <a href="autres-taxes.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Autres Taxes</a>
-                <a href="faq.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="explication-tob.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Comprendre la TOB</a>
+                <a href="dividende.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Dividendes</a>
+                <a href="compte-etranger.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Comptes Étrangers</a>
+                <a href="autres-taxes.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Autres Taxes</a>
+                <a href="faq.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">FAQ</a>
+                
+                <button id="themeToggleBtn" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none">
+                    <span id="themeIconDark" class="hidden">🌙</span>
+                    <span id="themeIconLight" class="hidden">☀️</span>
+                </button>
             </div>
 
-            <button id="mobileMenuBtn" class="md:hidden flex items-center text-slate-600 hover:text-emerald-600 focus:outline-none">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+            <div class="md:hidden flex items-center space-x-3">
+                <button id="themeToggleBtnMobile" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition">
+                    <span id="themeIconDarkMobile" class="hidden">🌙</span>
+                    <span id="themeIconLightMobile" class="hidden">☀️</span>
+                </button>
+                <button id="mobileMenuBtn" class="flex items-center text-slate-600 dark:text-slate-300 hover:text-emerald-600 focus:outline-none">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
         </div>
 
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 shadow-lg absolute w-full left-0 flex flex-col space-y-4">
-            <a href="explication-tob.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comprendre la TOB</a>
-            <a href="dividende.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
-            <a href="compte-etranger.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
-            <a href="faq.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 py-4 shadow-lg absolute w-full left-0 flex flex-col space-y-4">
+            <a href="explication-tob.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Comprendre la TOB</a>
+            <a href="dividende.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Dividendes</a>
+            <a href="compte-etranger.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Comptes Étrangers</a>
+            <a href="faq.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">FAQ</a>
         </div>
     </header>
 
     <main class="flex-grow py-12 px-4">
         <div class="max-w-3xl mx-auto">
             
-            <div class="text-center mb-10">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
                     Déclaration TOB <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">en 30 secondes</span>
                 </h1>
-                <p class="text-slate-500 text-lg max-w-xl mx-auto mb-4">
-                Saisissez vos données et vos transactions étape par étape. Nous nous chargeons des calculs et produisons un PDF complété, prêt à l’envoi.                
+                <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto mb-4">
+                Saisissez vos données et vos transactions étape par étape. Nous produisons un PDF complété, prêt à l’envoi.                
                 </p>
-                <a href="explication-tob.html" class="md:hidden text-sm text-emerald-600 font-medium hover:underline">
-                    ℹ️ C'est quoi la TOB ?
-                </a>
+                
+                <button onclick="openHistory()" class="inline-flex items-center text-sm font-medium bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 py-2 px-4 rounded-full shadow-sm hover:shadow-md transition hover:border-emerald-300 dark:hover:border-emerald-600">
+                    📂 Voir mon historique
+                </button>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors">
                 
-                <div class="p-8 border-b border-slate-100">
+                <div class="p-8 border-b border-slate-100 dark:border-slate-700">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-bold text-slate-800 flex items-center">
-                            <span class="bg-slate-100 text-slate-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center">
+                            <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
                             Identification
                         </h2>
-                        <span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2 py-1 rounded border border-emerald-100 flex items-center">
+                        <span class="text-xs font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-2 py-1 rounded border border-emerald-100 dark:border-emerald-800 flex items-center">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             Sauvegarde auto
                         </span>
@@ -91,89 +133,56 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <div>
-                            <label class="flex items-center text-sm font-medium text-slate-700 mb-1">
+                            <label class="flex items-center text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                                 Mois
-                                <div class="relative group inline-block ml-1">
-                                    <span class="text-slate-400 cursor-help text-xs bg-slate-100 rounded-full w-4 h-4 inline-flex items-center justify-center border border-slate-200">❔</span>
-                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none">
-                                        Mois pendant lequel les transactions ont été exécutées (ex: 01, 02...).
-                                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
-                                    </div>
-                                </div>
                             </label>
-                            <input type="text" id="month" placeholder="Ex: 01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <input type="text" id="month" placeholder="Ex: 01" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Année</label>
-                            <input type="text" id="year" placeholder="Ex: 2026" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Année</label>
+                            <input type="text" id="year" placeholder="Ex: 2026" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
 
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Nom et Prénom</label>
-                            <input type="text" id="name" placeholder="Jean Dupont" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nom et Prénom</label>
+                            <input type="text" id="name" placeholder="Jean Dupont" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
-                            <label class="flex items-center text-sm font-medium text-slate-700 mb-1">
+                            <label class="flex items-center text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                                 Numéro de Registre National (NN)
-                                <div class="relative group inline-block ml-1">
-                                    <span class="text-slate-400 cursor-help text-xs bg-slate-100 rounded-full w-4 h-4 inline-flex items-center justify-center border border-slate-200">❔</span>
-                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none">
-                                        Numéro à 11 chiffres situé au dos de votre carte d'identité belge.
-                                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
-                                    </div>
-                                </div>
                             </label>
-                            <input type="text" id="nn" placeholder="00.00.00-000.00" maxlength="15" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <input type="text" id="nn" placeholder="00.00.00-000.00" maxlength="15" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Adresse complète</label>
-                            <input type="text" id="address" placeholder="Rue de la Loi 16, 1000 Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Adresse complète</label>
+                            <input type="text" id="address" placeholder="Rue de la Loi 16, 1000 Bruxelles" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
                 </div>
 
-                <div class="p-8 bg-slate-50/50 border-b border-slate-100">
-                    <h2 class="text-lg font-bold text-slate-800 flex items-center mb-6">
-                        <span class="bg-emerald-100 text-emerald-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                <div class="p-8 bg-slate-50/50 dark:bg-slate-800/80 border-b border-slate-100 dark:border-slate-700">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center mb-6">
+                        <span class="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
                         Transactions
                     </h2>
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6">
+                    <div class="bg-white dark:bg-slate-700 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-600 mb-6 transition-colors">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                             <div>
-                                <label class="flex items-center text-xs font-semibold text-slate-500 uppercase mb-1">
-                                    Montant Transaction (€)
-                                    <div class="relative group inline-block ml-1">
-                                        <span class="text-slate-400 cursor-help text-[10px] bg-slate-100 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center border border-slate-200">❔</span>
-                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none normal-case">
-                                            Total brut de l'ordre (Prix x Quantité). N'incluez pas les frais de courtage.
-                                            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
-                                        </div>
-                                    </div>
-                                </label>
-                                <input type="number" id="newAmount" placeholder="1000.00" step="0.01" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Montant Transaction (€)</label>
+                                <input type="number" id="newAmount" placeholder="1000.00" step="0.01" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                             </div>
                             <div>
-                                <label class="flex items-center text-xs font-semibold text-slate-500 uppercase mb-1">
-                                    Taux Applicable
-                                    <div class="relative group inline-block ml-1">
-                                        <span class="text-slate-400 cursor-help text-[10px] bg-slate-100 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center border border-slate-200">❔</span>
-                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-xs font-normal rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50 text-center pointer-events-none normal-case">
-                                            0,12% : Oblig / ETF Dist<br>0,35% : Actions / ETF Acc<br>1,32% : Fonds enregistrés BE
-                                            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></div>
-                                        </div>
-                                    </div>
-                                </label>
-                                <select id="newRate" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer">
+                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Taux Applicable</label>
+                                <select id="newRate" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer">
                                     <option value="0.35">0,35 % (Actions, ETF Acc)</option>
                                     <option value="0.12">0,12 % (Obligations, ETF Dist)</option>
-                                    <option value="1.32">1,32 % (Fonds enregistrés BE)</option>
+                                    <option value="1.32">1,32 % (Fonds BE)</option>
                                 </select>
                             </div>
-                            <button onclick="addTransaction()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center shadow-sm hover:shadow-md">
-                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <button onclick="addTransaction()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-4 rounded-lg transition shadow-sm hover:shadow-md flex items-center justify-center">
                                 Ajouter
                             </button>
                         </div>
@@ -181,143 +190,133 @@
 
                     <div class="mb-6">
                         <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-sm font-medium text-slate-500">Historique des ajouts</h3>
-                            <button onclick="clearAllTransactions()" class="text-xs text-red-500 hover:text-red-700 font-medium flex items-center transition" title="Tout effacer">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Historique des ajouts</h3>
+                            <button onclick="clearAllTransactions()" class="text-xs text-red-500 dark:text-red-400 hover:text-red-700 font-medium flex items-center transition" title="Tout effacer">
                                 Vider la liste
                             </button>
                         </div>
-                        <div id="transactionList" class="space-y-2 max-h-48 overflow-y-auto scroller bg-white rounded-lg border border-slate-100 p-2 min-h-[60px] flex flex-col justify-center">
-                            <p class="text-center text-slate-400 text-sm italic">Aucune transaction ajoutée</p>
+                        <div id="transactionList" class="space-y-2 max-h-48 overflow-y-auto scroller bg-white dark:bg-slate-700 rounded-lg border border-slate-100 dark:border-slate-600 p-2 min-h-[60px] flex flex-col justify-center transition-colors">
+                            <p class="text-center text-slate-400 dark:text-slate-500 text-sm italic">Aucune transaction ajoutée</p>
                         </div>
                     </div>
 
-                    <div class="mt-4 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <div class="flex justify-between text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">
+                    <div class="mt-4 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl p-5 shadow-sm transition-colors">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">
                             <span>Base imposable globale</span>
-                            <span id="totalBase" class="text-slate-800 text-sm">0,00 €</span>
+                            <span id="totalBase" class="text-slate-800 dark:text-white text-sm">0,00 €</span>
                         </div>
-                        <div class="w-full h-3 bg-slate-100 rounded-full flex overflow-hidden shadow-inner">
+                        <div class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full flex overflow-hidden shadow-inner">
                             <div id="bar_012" class="bg-blue-500 h-full transition-all duration-500" style="width: 0%"></div>
                             <div id="bar_035" class="bg-orange-500 h-full transition-all duration-500" style="width: 0%"></div>
                             <div id="bar_132" class="bg-red-500 h-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 text-center text-xs mt-4">
-                            <div><span class="inline-block w-2.5 h-2.5 bg-blue-500 rounded-full mr-1"></span>0,12%<br><span id="summary_012" class="font-bold text-slate-700">0,00 €</span></div>
-                            <div><span class="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full mr-1"></span>0,35%<br><span id="summary_035" class="font-bold text-slate-700">0,00 €</span></div>
-                            <div><span class="inline-block w-2.5 h-2.5 bg-red-500 rounded-full mr-1"></span>1,32%<br><span id="summary_132" class="font-bold text-slate-700">0,00 €</span></div>
+                            <div><span class="inline-block w-2.5 h-2.5 bg-blue-500 rounded-full mr-1"></span>0,12%<br><span id="summary_012" class="font-bold text-slate-700 dark:text-slate-300">0,00 €</span></div>
+                            <div><span class="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full mr-1"></span>0,35%<br><span id="summary_035" class="font-bold text-slate-700 dark:text-slate-300">0,00 €</span></div>
+                            <div><span class="inline-block w-2.5 h-2.5 bg-red-500 rounded-full mr-1"></span>1,32%<br><span id="summary_132" class="font-bold text-slate-700 dark:text-slate-300">0,00 €</span></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="p-8 border-b border-slate-100">
-                    <h2 class="text-lg font-bold text-slate-800 flex items-center mb-6">
-                        <span class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                <div class="p-8 border-b border-slate-100 dark:border-slate-700">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center mb-6">
+                        <span class="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
                         Signature & Date
                     </h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Fait à (Ville)</label>
-                            <input type="text" id="signCity" placeholder="Bruxelles" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Fait à (Ville)</label>
+                            <input type="text" id="signCity" placeholder="Bruxelles" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Date de signature</label>
-                            <input type="date" id="signDate" class="w-full rounded-lg border-slate-200 bg-slate-50 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Date de signature</label>
+                            <input type="date" id="signDate" class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
 
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Votre Signature</label>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Votre Signature</label>
                     <div class="mb-4">
                         <div class="flex space-x-4 mb-2">
-                            <button onclick="toggleSignMode('draw')" id="btnDraw" class="text-sm font-medium px-3 py-1 rounded-md bg-slate-200 text-slate-700">Dessiner</button>
-                            <button onclick="toggleSignMode('upload')" id="btnUpload" class="text-sm font-medium px-3 py-1 rounded-md text-slate-500 hover:bg-slate-100">Importer Image</button>
+                            <button onclick="toggleSignMode('draw')" id="btnDraw" class="text-sm font-medium px-3 py-1 rounded-md bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white">Dessiner</button>
+                            <button onclick="toggleSignMode('upload')" id="btnUpload" class="text-sm font-medium px-3 py-1 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">Importer Image</button>
                         </div>
 
-                        <div id="drawArea" class="border-2 border-dashed border-slate-300 rounded-lg bg-slate-50 relative">
-                            <canvas id="signatureCanvas" height="150" class="w-full cursor-crosshair rounded-lg"></canvas>
-                            <button onclick="clearCanvas()" class="absolute top-2 right-2 text-xs bg-white border border-slate-200 px-2 py-1 rounded text-red-500 hover:text-red-700">Effacer</button>
+                        <div id="drawArea" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-900 relative">
+                            <canvas id="signatureCanvas" height="150" class="w-full cursor-crosshair rounded-lg bg-white"></canvas>
+                            <button onclick="clearCanvas()" class="absolute top-2 right-2 text-xs bg-white text-red-500 border border-slate-200 px-2 py-1 rounded hover:text-red-700 shadow-sm">Effacer</button>
                         </div>
 
-                        <div id="uploadArea" class="hidden border-2 border-dashed border-slate-300 rounded-lg bg-slate-50 p-6 text-center">
-                            <input type="file" id="signatureFile" accept="image/png, image/jpeg" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
-                            <p class="text-xs text-slate-400 mt-2">Format PNG ou JPG (fond transparent recommandé)</p>
+                        <div id="uploadArea" class="hidden border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-900 p-6 text-center">
+                            <input type="file" id="signatureFile" accept="image/png, image/jpeg" class="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 dark:file:bg-emerald-900/30 file:text-emerald-700 dark:file:text-emerald-400"/>
+                            <p class="text-xs text-slate-400 mt-2">Format PNG ou JPG</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="p-8 bg-slate-50">
-                    <h2 class="text-lg font-bold text-slate-800 flex items-center mb-6">
-                        <span class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                <div class="p-8 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center mb-6">
+                        <span class="bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
                         Paiement & Envoi
                     </h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         
-                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                            <h3 class="font-bold text-slate-800 mb-4 flex items-center border-b border-slate-100 pb-3">
+                        <div class="bg-white dark:bg-slate-700 rounded-xl shadow-sm border border-slate-200 dark:border-slate-600 p-6 transition-colors">
+                            <h3 class="font-bold text-slate-800 dark:text-white mb-4 flex items-center border-b border-slate-100 dark:border-slate-600 pb-3">
                                 💳 1. Effectuer le virement
                             </h3>
-                            <div class="space-y-4 text-sm text-slate-600 mb-6">
+                            <div class="space-y-4 text-sm text-slate-600 dark:text-slate-300 mb-6">
                                 <div>
                                     <span class="block text-xs text-slate-400 font-semibold uppercase">Montant exact à payer</span>
-                                    <span id="payAmount" class="text-xl font-extrabold text-emerald-600">0,00 €</span>
+                                    <span id="payAmount" class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">0,00 €</span>
                                 </div>
                                 <div>
                                     <span class="block text-xs text-slate-400 font-semibold uppercase">Bénéficiaire</span>
-                                    <span class="font-medium text-slate-800">Centre de perception – section taxes diverses</span>
+                                    <span class="font-medium text-slate-800 dark:text-white">Centre de perception – section taxes diverses</span>
                                 </div>
                                 <div>
                                     <span class="block text-xs text-slate-400 font-semibold uppercase">Compte (IBAN)</span>
                                     <div class="flex items-center space-x-2 mt-0.5">
-                                        <code class="bg-slate-100 px-2 py-1 rounded text-slate-800 font-mono font-bold tracking-wide">BE39 6792 0022 9319</code>
-                                        <button onclick="copyToClipboard('BE39679200229319')" class="text-emerald-600 hover:text-emerald-700 p-1.5 bg-emerald-50 rounded shadow-sm transition" title="Copier l'IBAN">📋</button>
+                                        <code class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-800 dark:text-white font-mono font-bold tracking-wide">BE39 6792 0022 9319</code>
+                                        <button onclick="copyToClipboard('BE39679200229319')" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 p-1.5 bg-emerald-50 dark:bg-emerald-900/30 rounded transition" title="Copier l'IBAN">📋</button>
                                     </div>
                                 </div>
                                 <div>
                                     <span class="block text-xs text-slate-400 font-semibold uppercase">Communication Libre</span>
                                     <div class="flex items-center space-x-2 mt-0.5">
-                                        <code id="payComm" class="bg-slate-100 px-2 py-1 rounded text-slate-800 font-mono font-bold tracking-wide">TOB - ...</code>
-                                        <button onclick="copyToClipboard(document.getElementById('payComm').innerText)" class="text-emerald-600 hover:text-emerald-700 p-1.5 bg-emerald-50 rounded shadow-sm transition" title="Copier la communication">📋</button>
+                                        <code id="payComm" class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-800 dark:text-white font-mono font-bold tracking-wide">TOB - ...</code>
+                                        <button onclick="copyToClipboard(document.getElementById('payComm').innerText)" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 p-1.5 bg-emerald-50 dark:bg-emerald-900/30 rounded transition" title="Copier">📋</button>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="border-t border-slate-100 pt-4">
+                            <div class="border-t border-slate-100 dark:border-slate-600 pt-4">
                                 <span class="block text-xs text-slate-400 font-semibold uppercase mb-2 text-center">Ou scannez avec votre app bancaire</span>
                                 <div id="qrcode" class="flex justify-center p-2 bg-white rounded-lg">
                                     <p class="text-xs text-slate-400 text-center italic py-4">Ajoutez des transactions pour générer le QR Code.</p>
                                 </div>
-                                <p class="text-[10px] text-slate-400 mt-2 text-center leading-tight">Généré 100% localement. Aucune donnée n'est envoyée sur internet.</p>
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                        <div class="bg-white dark:bg-slate-700 rounded-xl shadow-sm border border-slate-200 dark:border-slate-600 p-6 flex flex-col justify-between transition-colors">
                             <div>
-                                <h3 class="font-bold text-slate-800 mb-4 flex items-center border-b border-slate-100 pb-3">
+                                <h3 class="font-bold text-slate-800 dark:text-white mb-4 flex items-center border-b border-slate-100 dark:border-slate-600 pb-3">
                                     ✉️ 2. Envoyer la déclaration
                                 </h3>
-                                <p class="text-sm text-slate-600 mb-6 leading-relaxed">
-                                    Une fois le virement effectué, générez votre formulaire PDF et envoyez-le au SPF Finances (en pièce jointe de l'e-mail).
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                                    Une fois le virement effectué, générez votre formulaire PDF et envoyez-le au SPF Finances.
                                 </p>
                                 
                                 <div class="space-y-3">
-                                    <button onclick="fillPDF()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition flex items-center justify-center text-sm">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                    <button onclick="fillPDF()" class="w-full bg-slate-800 hover:bg-slate-900 dark:bg-slate-600 dark:hover:bg-slate-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition flex items-center justify-center text-sm">
                                         1. Télécharger mon PDF
                                     </button>
                                     
                                     <a id="emailLink" href="mailto:CPIC.TAXDIV@minfin.fed.be" class="w-full inline-flex items-center justify-center text-white bg-emerald-600 hover:bg-emerald-700 font-medium py-3.5 px-4 rounded-xl transition shadow-md text-sm">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                         2. Ouvrir ma boîte mail
                                     </a>
                                 </div>
-                            </div>
-                            <div class="mt-6 bg-amber-50 rounded-lg p-3 border border-amber-100">
-                                <p class="text-xs text-amber-800 flex items-start">
-                                    <span class="mr-2">⚠️</span>
-                                    <span>N'oubliez pas d'attacher le PDF fraîchement téléchargé à votre e-mail avant de l'envoyer !</span>
-                                </p>
                             </div>
                         </div>
 
@@ -332,15 +331,40 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-8 mt-auto transition-colors">
         <div class="max-w-4xl mx-auto px-6 text-center">
-            <p class="text-slate-600 text-sm font-medium">
+            <p class="text-slate-600 dark:text-slate-400 text-sm font-medium">
                 Par un investisseur belge, pour les investisseurs belges 🇧🇪
             </p>
         </div>
     </footer>
 
     <script>
+        // --- 🌙 THEME SOMBRE (DARK MODE) ---
+        const themeToggleBtns = [document.getElementById('themeToggleBtn'), document.getElementById('themeToggleBtnMobile')];
+        const themeIconDarks = [document.getElementById('themeIconDark'), document.getElementById('themeIconDarkMobile')];
+        const themeIconLights = [document.getElementById('themeIconLight'), document.getElementById('themeIconLightMobile')];
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            themeIconDarks.forEach(el => isDark ? el.classList.add('hidden') : el.classList.remove('hidden'));
+            themeIconLights.forEach(el => isDark ? el.classList.remove('hidden') : el.classList.add('hidden'));
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeIcons();
+        }
+
+        themeToggleBtns.forEach(btn => btn.addEventListener('click', toggleTheme));
+        updateThemeIcons();
+
         // --- 🍞 SYSTÈME DE NOTIFICATIONS (TOASTS) ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -352,16 +376,13 @@
             toast.innerHTML = `<span class="text-lg">${icon}</span><span class="text-sm font-medium">${message}</span>`;
             
             container.appendChild(toast);
-            
             setTimeout(() => { toast.classList.remove('translate-y-10', 'opacity-0'); }, 10);
-            
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-2');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // --- 📋 COPIER DANS LE PRESSE-PAPIER ---
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast("Copié dans le presse-papier !", "success");
@@ -370,18 +391,79 @@
             });
         }
 
-        // --- 💾 SAUVEGARDE LOCALE (LocalStorage) ---
+        // --- 📂 HISTORIQUE DES DÉCLARATIONS ---
+        const historyModal = document.getElementById('historyModal');
+        
+        function openHistory() {
+            renderHistory();
+            historyModal.classList.remove('hidden');
+        }
+        
+        function closeHistory() {
+            historyModal.classList.add('hidden');
+        }
+
+        function saveToHistory(month, year, total) {
+            let history = JSON.parse(localStorage.getItem('mytob_history') || '[]');
+            const dateStr = new Date().toLocaleDateString('fr-BE');
+            
+            // Ajouter au début du tableau
+            history.unshift({
+                id: Date.now(),
+                dateGened: dateStr,
+                period: `${month}/${year}`,
+                amount: total
+            });
+            
+            localStorage.setItem('mytob_history', JSON.stringify(history));
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            let history = JSON.parse(localStorage.getItem('mytob_history') || '[]');
+            
+            list.innerHTML = "";
+            if (history.length === 0) {
+                list.innerHTML = '<p class="text-center text-slate-500 dark:text-slate-400 text-sm py-4">Aucun PDF généré pour le moment.</p>';
+                return;
+            }
+
+            history.forEach(item => {
+                list.innerHTML += `
+                    <div class="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600">
+                        <div>
+                            <p class="font-bold text-slate-800 dark:text-white text-sm">Période : ${item.period}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Généré le ${item.dateGened}</p>
+                        </div>
+                        <div class="font-bold text-emerald-600 dark:text-emerald-400">${item.amount} €</div>
+                    </div>
+                `;
+            });
+        }
+
+        function clearHistory() {
+            if(confirm("Voulez-vous effacer tout l'historique ?")) {
+                localStorage.removeItem('mytob_history');
+                renderHistory();
+                showToast("Historique effacé", "success");
+            }
+        }
+
+        // Fermer la modale si on clique à côté
+        historyModal.addEventListener('click', (e) => {
+            if(e.target === historyModal) closeHistory();
+        });
+
+
+        // --- 💾 SAUVEGARDE LOCALE FORMULAIRE ---
         const savedFields = ['name', 'nn', 'address', 'signCity'];
 
         document.addEventListener('DOMContentLoaded', () => {
             savedFields.forEach(id => {
                 const el = document.getElementById(id);
                 const savedVal = localStorage.getItem('mytob_' + id);
-                if (savedVal && el) {
-                    el.value = savedVal;
-                }
+                if (savedVal && el) { el.value = savedVal; }
             });
-
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('signDate').value = today;
             updatePaymentAndMail();
@@ -397,28 +479,22 @@
             });
         });
 
-        // --- ✨ FORMATAGE AUTO DU NUMÉRO NATIONAL (NN) ---
         document.getElementById('nn').addEventListener('input', function (e) {
             let val = e.target.value.replace(/\D/g, ''); 
             let formatted = '';
-
             if (val.length > 0) formatted += val.substring(0, 2);
             if (val.length > 2) formatted += '.' + val.substring(2, 4);
             if (val.length > 4) formatted += '.' + val.substring(4, 6);
             if (val.length > 6) formatted += '-' + val.substring(6, 9);
             if (val.length > 9) formatted += '.' + val.substring(9, 11);
-            
             e.target.value = formatted;
             localStorage.setItem('mytob_nn', formatted);
             updatePaymentAndMail();
         });
 
         // --- MENU MOBILE ---
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
         });
 
         // --- GESTION DES TRANSACTIONS ---
@@ -427,7 +503,6 @@
         function addTransaction() {
             const amountInput = document.getElementById('newAmount');
             const rateInput = document.getElementById('newRate');
-            
             const amount = parseFloat(amountInput.value);
             const rate = rateInput.value;
 
@@ -436,12 +511,7 @@
                 return;
             }
 
-            transactions.push({
-                id: Date.now(),
-                amount: amount,
-                rate: rate
-            });
-
+            transactions.push({ id: Date.now(), amount: amount, rate: rate });
             amountInput.value = "";
             showToast("Transaction ajoutée", "success");
             renderTransactions();
@@ -466,23 +536,23 @@
             list.innerHTML = ""; 
 
             if (transactions.length === 0) {
-                list.innerHTML = '<p class="text-center text-slate-400 text-sm italic">Aucune transaction ajoutée</p>';
+                list.innerHTML = '<p class="text-center text-slate-400 dark:text-slate-500 text-sm italic">Aucune transaction ajoutée</p>';
             } else {
                 transactions.forEach(t => {
                     const div = document.createElement('div');
-                    div.className = "flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-100 text-sm mb-1 last:mb-0";
+                    div.className = "flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2 rounded border border-slate-100 dark:border-slate-600 text-sm mb-1";
                     
-                    let badgeClass = "bg-gray-100 text-gray-800";
-                    if(t.rate === "0.12") badgeClass = "bg-blue-100 text-blue-800";
-                    if(t.rate === "0.35") badgeClass = "bg-orange-100 text-orange-800";
-                    if(t.rate === "1.32") badgeClass = "bg-red-100 text-red-800";
+                    let badgeClass = "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+                    if(t.rate === "0.12") badgeClass = "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300";
+                    if(t.rate === "0.35") badgeClass = "bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300";
+                    if(t.rate === "1.32") badgeClass = "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300";
 
                     div.innerHTML = `
                         <div class="flex items-center">
                             <span class="${badgeClass} font-bold px-2 py-0.5 rounded text-xs mr-3 min-w-[50px] text-center">${t.rate}%</span>
-                            <span class="font-medium text-slate-700">${t.amount.toFixed(2)} €</span>
+                            <span class="font-medium text-slate-700 dark:text-slate-200">${t.amount.toFixed(2)} €</span>
                         </div>
-                        <button onclick="removeTransaction(${t.id})" class="text-slate-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition">
+                        <button onclick="removeTransaction(${t.id})" class="text-slate-400 hover:text-red-500 p-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     `;
@@ -492,20 +562,9 @@
             updateSummaries();
         }
 
-        // --- 📊 DASHBOARD UPDATER ---
         function updateSummaries() {
-            let stats = {
-                '0.12': { count: 0, total: 0 },
-                '0.35': { count: 0, total: 0 },
-                '1.32': { count: 0, total: 0 }
-            };
-
-            transactions.forEach(t => {
-                if(stats[t.rate]) {
-                    stats[t.rate].count++;
-                    stats[t.rate].total += t.amount;
-                }
-            });
+            let stats = { '0.12': { total: 0 }, '0.35': { total: 0 }, '1.32': { total: 0 } };
+            transactions.forEach(t => { if(stats[t.rate]) { stats[t.rate].total += t.amount; } });
             
             const b012 = stats['0.12'].total;
             const b035 = stats['0.35'].total;
@@ -521,7 +580,6 @@
             document.getElementById('bar_035').style.width = total > 0 ? (b035/total*100) + "%" : "0%";
             document.getElementById('bar_132').style.width = total > 0 ? (b132/total*100) + "%" : "0%";
 
-            // Mise à jour de l'étape 4 (Paiement)
             updatePaymentAndMail(stats);
         }
 
@@ -536,7 +594,7 @@
             canvas.height = 150; 
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
-            ctx.strokeStyle = '#000000';
+            ctx.strokeStyle = '#000000'; // Toujours noir car fond forcé blanc
         }
         window.addEventListener('resize', resizeCanvas);
         setTimeout(resizeCanvas, 100);
@@ -565,18 +623,18 @@
             if (mode === 'draw') {
                 document.getElementById('drawArea').classList.remove('hidden');
                 document.getElementById('uploadArea').classList.add('hidden');
-                document.getElementById('btnDraw').className = "text-sm font-medium px-3 py-1 rounded-md bg-slate-200 text-slate-700";
-                document.getElementById('btnUpload').className = "text-sm font-medium px-3 py-1 rounded-md text-slate-500 hover:bg-slate-100";
+                document.getElementById('btnDraw').className = "text-sm font-medium px-3 py-1 rounded-md bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white";
+                document.getElementById('btnUpload').className = "text-sm font-medium px-3 py-1 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700";
                 setTimeout(resizeCanvas, 50);
             } else {
                 document.getElementById('drawArea').classList.add('hidden');
                 document.getElementById('uploadArea').classList.remove('hidden');
-                document.getElementById('btnDraw').className = "text-sm font-medium px-3 py-1 rounded-md text-slate-500 hover:bg-slate-100";
-                document.getElementById('btnUpload').className = "text-sm font-medium px-3 py-1 rounded-md bg-slate-200 text-slate-700";
+                document.getElementById('btnDraw').className = "text-sm font-medium px-3 py-1 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700";
+                document.getElementById('btnUpload').className = "text-sm font-medium px-3 py-1 rounded-md bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white";
             }
         }
 
-        // --- PDF ---
+        // --- PDF GENERATION ---
         const { PDFDocument, rgb } = PDFLib;
 
         async function fillPDF() {
@@ -607,22 +665,21 @@
                 }
                 const fullSignText = signCity && signDateFormatted ? `${signCity}, le ${signDateFormatted}` : "";
 
-                let stats = { '0.12': { total: 0 }, '0.35': { total: 0 }, '1.32': { total: 0 } };
-                let count = { '0.12': 0, '0.35': 0, '1.32': 0 };
+                let stats = { '0.12': { total: 0, count: 0 }, '0.35': { total: 0, count: 0 }, '1.32': { total: 0, count: 0 } };
                 transactions.forEach(t => { 
                     stats[t.rate].total += t.amount; 
-                    count[t.rate]++;
+                    stats[t.rate].count++;
                 });
 
-                const nb012 = count['0.12'] || "";
+                const nb012 = stats['0.12'].count || "";
                 const base012 = stats['0.12'].total;
                 const tax012 = base012 > 0 ? (base012 * 0.0012).toFixed(2) : "";
 
-                const nb035 = count['0.35'] || "";
+                const nb035 = stats['0.35'].count || "";
                 const base035 = stats['0.35'].total;
                 const tax035 = base035 > 0 ? (base035 * 0.0035).toFixed(2) : "";
 
-                const nb132 = count['1.32'] || "";
+                const nb132 = stats['1.32'].count || "";
                 const base132 = stats['1.32'].total;
                 const tax132 = base132 > 0 ? (base132 * 0.0132).toFixed(2) : "";
 
@@ -649,7 +706,6 @@
                 if(tax132) firstPage.drawText(tax132.toString(), { x: 502, y: 432, size: fontSize });
 
                 if(totalTax > 0) firstPage.drawText(totalTax, { x: 502, y: 386, size: fontSize, color: rgb(0, 0, 0) });
-
                 if(totalTax > 0) secondPage.drawText(totalTax, { x: 425, y: 452, size: fontSize });
 
                 if(fullSignText) {
@@ -691,6 +747,11 @@
                 link.click();
 
                 showToast("PDF généré avec succès !", "success");
+                
+                // Enregistrer dans l'historique !
+                if (totalTax > 0) {
+                    saveToHistory(month || 'XX', year || '2026', totalTax);
+                }
 
             } catch (err) {
                 showToast("Erreur lors de la création du PDF.", "error");
@@ -698,21 +759,17 @@
             }
         }
     
-        // --- 💌 MISE A JOUR EMAIL & QR CODE PAIEMENT ---
+        // --- 💌 MISE A JOUR PAIEMENT & EMAIL ---
         function updatePaymentAndMail(statsObj = null) {
             const m = document.getElementById('month').value || "MM";
             const y = document.getElementById('year').value || "YYYY";
             const name = document.getElementById('name').value || "[Votre Nom]";
-            
-            // On nettoie le numéro national pour la comm : que des chiffres
             const rawNN = document.getElementById('nn').value.replace(/\D/g, '');
             const nnStr = rawNN.length > 0 ? rawNN : "XXXXXXXXXXX";
             
-            // Communication "TOB - NN - MoisAnnée"
             const comm = `TOB - ${nnStr} - ${m}${y}`;
             document.getElementById('payComm').innerText = comm;
             
-            // Calcul du total de la taxe à payer
             let totalTax = 0;
             if (statsObj) {
                 const tax012 = statsObj['0.12'].total * 0.0012;
@@ -722,10 +779,8 @@
             }
             document.getElementById('payAmount').innerText = totalTax.toFixed(2) + ' €';
 
-            // Génération du QR Code SEPA
             generateQR(totalTax, comm);
 
-            // Mise à jour de l'email
             const subject = `Déclaration TOB - ${m}/${y} - ${name}`;
             const body = `Bonjour,\n\nVeuillez trouver en pièce jointe ma déclaration de Taxe sur les Opérations de Bourse (TOB) pour la période de ${m}/${y}.\n\nMon numéro de registre national est le : ${document.getElementById('nn').value || "[À compléter]"}\n\nBien à vous,\n\n${name}`;
             
@@ -742,14 +797,13 @@
                 return;
             }
 
-            // Format SEPA EPC (European Payments Council)
             const epcString = `BCD\n002\n1\nSCT\nGEBABEBB\nCentre de perception - section taxes diverses\nBE39679200229319\nEUR${amount.toFixed(2)}\n\n${communication}`;
 
             new QRCode(qrContainer, {
                 text: epcString,
                 width: 140,
                 height: 140,
-                colorDark : "#0f172a", // slate-900
+                colorDark : "#0f172a", 
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.M
             });

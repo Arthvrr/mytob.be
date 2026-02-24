@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,17 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -18,38 +29,47 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-EJSM6MXSMQ');
 </script>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col min-h-screen transition-colors duration-200">
 
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 transition-colors duration-200">
         <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-2">
                 <img src="icon.png" alt="Logo" class="h-12 w-auto"> 
-                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span>.be</span>
+                <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">My<span class="text-emerald-600">TOB</span>.be</span>
             </a>
             
-            <div class="hidden md:flex items-center space-x-4">
-                <a href="explication-tob.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Comprendre la TOB</a>
-                <a href="dividende.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
-                <a href="compte-etranger.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
-                <a href="autres-taxes.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Autres Taxes</a>
-                <a href="faq.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="explication-tob.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Comprendre la TOB</a>
+                <a href="dividende.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Dividendes</a>
+                <a href="compte-etranger.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Comptes Étrangers</a>
+                <a href="autres-taxes.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Autres Taxes</a>
+                <a href="faq.html" class="text-sm font-bold text-emerald-600 dark:text-emerald-400 transition">FAQ</a>
+                
+                <button id="themeToggleBtn" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none">
+                    <span id="themeIconDark" class="hidden">🌙</span>
+                    <span id="themeIconLight" class="hidden">☀️</span>
+                </button>
             </div>
 
-            <button id="mobileMenuBtn" class="md:hidden flex items-center text-slate-600 hover:text-emerald-600 focus:outline-none">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+            <div class="md:hidden flex items-center space-x-3">
+                <button id="themeToggleBtnMobile" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition focus:outline-none">
+                    <span id="themeIconDarkMobile" class="hidden">🌙</span>
+                    <span id="themeIconLightMobile" class="hidden">☀️</span>
+                </button>
+                <button id="mobileMenuBtn" class="flex items-center text-slate-600 dark:text-slate-300 hover:text-emerald-600 focus:outline-none">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
         </div>
 
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 shadow-lg absolute w-full left-0 flex flex-col space-y-4">
-            <a href="explication-tob.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comprendre la TOB</a>
-            <a href="dividende.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
-            <a href="compte-etranger.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
-            <a href="faq.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 py-4 shadow-lg absolute w-full left-0 flex flex-col space-y-4">
+            <a href="explication-tob.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Comprendre la TOB</a>
+            <a href="dividende.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Dividendes</a>
+            <a href="compte-etranger.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Comptes Étrangers</a>
+            <a href="autres-taxes.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Autres Taxes</a>
+            <a href="faq.html" class="text-base font-bold text-emerald-600 transition">FAQ</a>
         </div>
     </header>
 
@@ -57,40 +77,40 @@
         <div class="max-w-3xl mx-auto">
             
             <div class="text-center mb-10">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
                     Foire Aux Questions
                 </h1>
-                <p class="text-slate-500 text-lg max-w-xl mx-auto mb-4">
+                <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto">
                     Tout ce que vous devez savoir sur la déclaration TOB et l'utilisation de cet outil.
                 </p>
             </div>
 
             <div class="space-y-4">
                 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Qu'est-ce que la TOB ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Qu'est-ce que la TOB ?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                         La Taxe sur les Opérations de Bourse (TOB) est un impôt prélevé par l'État belge à chaque fois que vous achetez ou vendez une action, une obligation ou un ETF. Elle ne s'applique pas sur les plus-values, mais directement sur le montant brut de la transaction.
                     </p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Mon courtier ne s'en occupe-t-il pas déjà ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Mon courtier ne s'en occupe-t-il pas déjà ?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                         Cela dépend de votre courtier. Les courtiers belges (Bolero, Keytrade, etc.) prélèvent et déclarent la TOB automatiquement à la source. Cependant, si vous utilisez un courtier étranger (comme Trade Republic, eToro, ou souvent Degiro selon les comptes), c'est à vous de faire cette démarche fiscale.
                     </p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Quel est le délai légal pour faire sa déclaration ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Quel est le délai légal pour faire sa déclaration ?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                         La déclaration et le paiement de la TOB doivent être effectués au plus tard le <strong>dernier jour ouvrable du deuxième mois qui suit</strong> celui de la transaction. Par exemple, pour un achat effectué en janvier, la déclaration et le versement doivent parvenir au SPF Finances avant la fin mars.
                     </p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Comment savoir quel taux appliquer (0,12%, 0,35% ou 1,32%) ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Comment savoir quel taux appliquer (0,12%, 0,35% ou 1,32%) ?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                         C'est la partie la plus complexe de la législation belge. En résumé :
                         <br>- <strong>0,12%</strong> : S'applique généralement aux obligations et aux ETF de distribution (Dist).
                         <br>- <strong>0,35%</strong> : S'applique aux actions individuelles (Apple, Tesla...) et aux ETF capitalisants (Acc) non enregistrés en Belgique.
@@ -98,52 +118,24 @@
                     </p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Comment et où dois-je payer la TOB ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Le paiement se fait par virement bancaire sur le compte du SPF Finances (Bureau Sécurité Juridique). Le numéro de compte dépend de votre régime linguistique. Lors de votre virement, il est crucial d'indiquer en communication structurée ou libre : <strong>"TOB - [Mois/Année] - [Votre Numéro de Registre National]"</strong> pour qu'ils puissent lier votre paiement à votre PDF.
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Comment et où dois-je payer la TOB ?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Le paiement se fait par virement bancaire sur le compte du SPF Finances (Bureau Sécurité Juridique). Le numéro de compte dépend de votre régime linguistique. Lors de votre virement, il est crucial d'indiquer en communication structurée ou libre : <strong>"TOB - [Mois/Année] - [Votre Numéro de Registre National]"</strong>.
                     </p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Où dois-je envoyer le formulaire PDF généré ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Une fois le PDF généré par notre outil et signé (manuellement ou via l'outil), vous devez l'envoyer par e-mail au centre de perception compétent. Pour les francophones, l'adresse est généralement : <strong>CPIC.TAXDIV@minfin.fed.be</strong>. Notre bouton final pré-remplit cet e-mail pour vous !
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Que se passe-t-il si je suis en retard ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Le SPF Finances applique des pénalités strictes : une amende de <strong>50 € par semaine de retard</strong> (plafonnée selon certaines conditions) ainsi que des intérêts de retard calculés sur le montant de la taxe due. Mieux vaut mettre un rappel dans son calendrier !
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">La TOB s'applique-t-elle aux cryptomonnaies ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Non. L'achat et la vente de cryptomonnaies (Bitcoin, Ethereum...) sur des plateformes comme Binance ou Kraken ne sont actuellement <strong>pas soumis à la TOB</strong>. Cependant, attention, les plus-values cryptos peuvent être taxées au titre des revenus divers (33%) si elles relèvent de la spéculation.
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Dois-je faire une déclaration si je n'ai rien acheté ni vendu ce mois-ci ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Non. Contrairement à certaines déclarations TVA, il n'y a <strong>pas de déclaration "néant"</strong> pour la TOB. Si vous n'avez effectué aucune transaction sur votre courtier étranger au cours d'un mois, vous n'avez rien à déclarer ni à envoyer.
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-2">Que faites-vous de mes données personnelles ?</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Absolument rien ! MyTOB.be a été développé par un investisseur pour garantir votre vie privée. Aucune donnée (ni votre nom, ni vos transactions) n'est envoyée vers nos serveurs. Tout s'exécute directement et localement sur <strong>votre ordinateur ou votre smartphone</strong>.
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Que faites-vous de mes données personnelles ?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Absolument rien ! MyTOB.be a été développé par un investisseur pour garantir votre vie privée. Aucune donnée n'est envoyée vers nos serveurs. Tout s'exécute directement et localement sur <strong>votre ordinateur ou votre smartphone</strong>.
                     </p>
                 </div>
 
             </div>
 
             <div class="mt-8 text-center">
-                <a href="index.html" class="inline-flex items-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl transition">
+                <a href="index.html" class="inline-flex items-center bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 dark:hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl transition">
                     ← Retourner au générateur
                 </a>
             </div>
@@ -151,22 +143,49 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-8 mt-auto transition-colors">
         <div class="max-w-4xl mx-auto px-6 text-center">
-            <p class="text-slate-600 text-sm font-medium">
-                Par un investisseur belge, pour les investisseurs belges 🇧🇪
+            <p class="text-slate-600 dark:text-slate-400 text-sm font-medium">
+                &copy; 2026 StocksPickeur. Fait avec passion en Belgique 🇧🇪
             </p>
         </div>
     </footer>
 
     <script>
-        // Gestion du menu mobile (pour que le header fonctionne sur la page FAQ)
+        // --- 🌙 THEME SOMBRE (DARK MODE) ---
+        const themeToggleBtns = [document.getElementById('themeToggleBtn'), document.getElementById('themeToggleBtnMobile')];
+        const themeIconDarks = [document.getElementById('themeIconDark'), document.getElementById('themeIconDarkMobile')];
+        const themeIconLights = [document.getElementById('themeIconLight'), document.getElementById('themeIconLightMobile')];
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            themeIconDarks.forEach(el => { if(el) isDark ? el.classList.add('hidden') : el.classList.remove('hidden') });
+            themeIconLights.forEach(el => { if(el) isDark ? el.classList.remove('hidden') : el.classList.add('hidden') });
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeIcons();
+        }
+
+        themeToggleBtns.forEach(btn => { if(btn) btn.addEventListener('click', toggleTheme) });
+        updateThemeIcons();
+
+        // --- GESTION DU MENU MOBILE ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        if(mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
     </script>
 </body>
 </html>

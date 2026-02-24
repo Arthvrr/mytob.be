@@ -1,74 +1,115 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taxe Reynders & Comptes-Titres | MyTOB.be</title>
-    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <link rel="icon" type="image/x-icon" href="logo-black.ico">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <style>
         body { font-family: 'Inter', sans-serif; }
+        
+        /* Adaptation des styles .prose pour le Dark Mode */
         .prose p { margin-bottom: 1.5rem; line-height: 1.75; color: #334155; }
+        .dark .prose p { color: #cbd5e1; }
+        
         .prose h2 { margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #0f172a; font-size: 1.5rem; letter-spacing: -0.025em; }
+        .dark .prose h2 { color: #f8fafc; }
+        
         .prose h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; color: #1e293b; font-size: 1.125rem; }
-        .prose ul { margin-bottom: 1.5rem; list-style-type: disc; padding-left: 1.5rem; color: #334155; }
+        .dark .prose h3 { color: #f1f5f9; }
+        
+        .prose ul, .prose ol { margin-bottom: 1.5rem; padding-left: 1.5rem; color: #334155; }
+        .dark .prose ul, .dark .prose ol { color: #cbd5e1; }
+        .prose ul { list-style-type: disc; }
         .prose li { margin-bottom: 0.5rem; }
+        
+        .prose strong { color: #0f172a; }
+        .dark .prose strong { color: #f8fafc; }
+
+        /* Boîtes personnalisées et Dark Mode */
         .highlight-box { background-color: #F8FAFC; border-left: 4px solid #059669; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+        .dark .highlight-box { background-color: rgba(5, 150, 105, 0.1); border-left-color: #34d399; }
+        .dark .highlight-box p { color: #f1f5f9; }
+
         .warning-box { background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+        .dark .warning-box { background-color: rgba(239, 68, 68, 0.1); border-left-color: #f87171; }
+        .dark .warning-box h4 { color: #fca5a5; }
+        .dark .warning-box p, .dark .warning-box ul { color: #fecaca; }
+        .dark .warning-box strong { color: #f87171; }
     </style>
 </head>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJSM6MXSMQ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-EJSM6MXSMQ');
 </script>
-<body class="bg-white text-slate-800 flex flex-col min-h-screen">
+<body class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col min-h-screen transition-colors duration-200">
 
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 transition-colors duration-200">
         <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-2">
                 <img src="icon.png" alt="Logo" class="h-12 w-auto"> 
-                <span class="font-bold text-lg tracking-tight text-slate-900">My<span class="text-emerald-600">TOB</span>.be</span>
+                <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">My<span class="text-emerald-600">TOB</span>.be</span>
             </a>
             
-            <div class="hidden md:flex items-center space-x-4">
-                <a href="explication-tob.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Comprendre la TOB</a>
-                <a href="dividende.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
-                <a href="compte-etranger.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
-                <a href="autres-taxes.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">Autres Taxes</a>
-                <a href="faq.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="explication-tob.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Comprendre la TOB</a>
+                <a href="dividende.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Dividendes</a>
+                <a href="compte-etranger.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Comptes Étrangers</a>
+                <a href="autres-taxes.html" class="text-sm font-bold text-emerald-600 dark:text-emerald-400 transition">Autres Taxes</a>
+                <a href="faq.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">FAQ</a>
+                
+                <button id="themeToggleBtn" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none">
+                    <span id="themeIconDark" class="hidden">🌙</span>
+                    <span id="themeIconLight" class="hidden">☀️</span>
+                </button>
             </div>
 
-            <button id="mobileMenuBtn" class="md:hidden flex items-center text-slate-600 hover:text-emerald-600 focus:outline-none">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+            <div class="md:hidden flex items-center space-x-3">
+                <button id="themeToggleBtnMobile" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition focus:outline-none">
+                    <span id="themeIconDarkMobile" class="hidden">🌙</span>
+                    <span id="themeIconLightMobile" class="hidden">☀️</span>
+                </button>
+                <button id="mobileMenuBtn" class="flex items-center text-slate-600 dark:text-slate-300 hover:text-emerald-600 focus:outline-none">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
         </div>
 
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 shadow-lg absolute w-full left-0 flex flex-col space-y-4">
-            <a href="explication-tob.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comprendre la TOB</a>
-            <a href="dividende.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Dividendes</a>
-            <a href="compte-etranger.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">Comptes Étrangers</a>
-            <a href="faq.html" class="text-base font-medium text-slate-600 hover:text-emerald-600 transition">FAQ</a>
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 py-4 shadow-lg absolute w-full left-0 flex flex-col space-y-4">
+            <a href="explication-tob.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Comprendre la TOB</a>
+            <a href="dividende.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Dividendes</a>
+            <a href="compte-etranger.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">Comptes Étrangers</a>
+            <a href="autres-taxes.html" class="text-base font-bold text-emerald-600 transition">Autres Taxes</a>
+            <a href="faq.html" class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition">FAQ</a>
         </div>
     </header>
 
     <main class="flex-grow">
-        <div class="bg-slate-50 border-b border-slate-100 py-16 px-4">
+        <div class="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 py-16 px-4 transition-colors">
             <div class="max-w-3xl mx-auto text-center">
-                <span class="text-emerald-600 font-semibold tracking-wide uppercase text-xs">Expertise Avancée</span>
-                <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mt-3 mb-6 leading-tight">
+                <span class="text-emerald-600 dark:text-emerald-400 font-semibold tracking-wide uppercase text-xs">Expertise Avancée</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mt-3 mb-6 leading-tight">
                     Les Taxes Oubliées Reynders & TCT
                 </h1>
-                <p class="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                <p class="text-xl text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
                     Vous pensez avoir tout payé avec la TOB ? Attention aux plus-values sur obligations et à la taxe sur les gros portefeuilles.
                 </p>
             </div>
@@ -80,7 +121,7 @@
                 Au-delà de la TOB et des dividendes, le système fiscal belge cache deux autres mécanismes qui peuvent surprendre les investisseurs utilisant des courtiers étrangers comme Degiro ou Trade Republic.
             </p>
 
-            <h2 class="text-red-700">1. La Taxe Reynders (Le piège des ETF Obligataires)</h2>
+            <h2 class="text-red-700 dark:text-red-400">1. La Taxe Reynders (Le piège des ETF Obligataires)</h2>
             <p>
                 En Belgique, les plus-values sur actions sont exonérées (0% d'impôt). Mais ce n'est <strong>pas</strong> le cas pour les obligations ! C'est ce qu'on appelle la "Taxe Reynders".
             </p>
@@ -113,7 +154,7 @@
                 <p class="text-red-900 text-sm mb-0">
                     Si vous ne connaissez pas le montant exact des intérêts accumulés (le TIS), le fisc peut exiger que vous payiez <strong>30% sur la totalité de la plus-value</strong> lors de la vente.
                     <br><br>
-                    <em>Conseil StocksPickeur : Pour éviter ce casse-tête administratif, privilégiez les obligations en direct ou acceptez que la gestion des ETF obligataires soit fiscalement lourde en Belgique.</em>
+                    <em>Note : Pour éviter ce casse-tête administratif, privilégiez les obligations en direct ou acceptez que la gestion des ETF obligataires soit fiscalement lourde en Belgique.</em>
                 </p>
             </div>
 
@@ -135,7 +176,7 @@
                 <br>
                 Si vous êtes chez un courtier étranger et que votre portefeuille dépasse 1 million d'euros, vous devez :
             </p>
-            <ol class="list-decimal pl-6 space-y-2 text-slate-700">
+            <ol class="list-decimal pl-6 space-y-2 text-slate-700 dark:text-slate-300">
                 <li>Calculer la valeur moyenne vous-même.</li>
                 <li>Remplir une déclaration spécifique TCT.</li>
                 <li>Payer la taxe spontanément.</li>
@@ -144,10 +185,10 @@
                 <em>Note : Il existe un mécanisme anti-abus qui empêche de scinder un compte de 1,2M€ en deux comptes de 600k€ pour éviter la taxe.</em>
             </p>
 
-            <div class="mt-12 pt-8 border-t border-slate-200 text-center">
-                <h3 class="mb-4">Votre cerveau fume ? C'est normal.</h3>
-                <p class="text-slate-500 mb-6">Revenons à des choses simples : déclarer votre TOB mensuelle.</p>
-                <a href="index.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-emerald-600 rounded-xl hover:bg-emerald-700 hover:shadow-lg hover:-translate-y-1">
+            <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700 text-center transition-colors">
+                <h3 class="mb-4 text-slate-800 dark:text-white">Votre cerveau fume ? C'est normal.</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-6">Revenons à des choses simples : déclarer votre TOB mensuelle.</p>
+                <a href="index.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-emerald-600 rounded-xl hover:bg-emerald-700 shadow-md hover:shadow-lg hover:-translate-y-1">
                     Retour au Générateur
                 </a>
             </div>
@@ -155,22 +196,49 @@
         </article>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-8 mt-auto transition-colors">
         <div class="max-w-4xl mx-auto px-6 text-center">
-            <p class="text-slate-600 text-sm font-medium">
-                Par un investisseur belge, pour les investisseurs belges 🇧🇪
+            <p class="text-slate-600 dark:text-slate-400 text-sm font-medium">
+                &copy; 2026 StocksPickeur. Fait avec passion en Belgique 🇧🇪
             </p>
         </div>
     </footer>
 
     <script>
+        // --- 🌙 THEME SOMBRE (DARK MODE) ---
+        const themeToggleBtns = [document.getElementById('themeToggleBtn'), document.getElementById('themeToggleBtnMobile')];
+        const themeIconDarks = [document.getElementById('themeIconDark'), document.getElementById('themeIconDarkMobile')];
+        const themeIconLights = [document.getElementById('themeIconLight'), document.getElementById('themeIconLightMobile')];
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            themeIconDarks.forEach(el => { if(el) isDark ? el.classList.add('hidden') : el.classList.remove('hidden') });
+            themeIconLights.forEach(el => { if(el) isDark ? el.classList.remove('hidden') : el.classList.add('hidden') });
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeIcons();
+        }
+
+        themeToggleBtns.forEach(btn => { if(btn) btn.addEventListener('click', toggleTheme) });
+        updateThemeIcons();
+
         // --- GESTION DU MENU MOBILE ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        if(mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
     </script>
 
 </body>
